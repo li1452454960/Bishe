@@ -1,0 +1,253 @@
+<template>
+  <el-card>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <el-row class="searchRow">
+      <el-col>
+        <el-input @clear="loadUserList" clearable placeholder="请输入内容" v-model="queryInfo.query" class="inputSearch">
+          <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+        <el-button @click="showAddUserDia()" type="success">添加用户</el-button>
+      </el-col>
+    </el-row>
+
+    <el-table :data="items">
+      <el-table-column type="index" label="ID" width="60">
+      </el-table-column>
+      <el-table-column prop="mb_name" label="姓名" width="80">
+      </el-table-column>
+      <el-table-column prop="mb_email" label="邮箱">
+      </el-table-column>
+      <el-table-column prop="mb_mobile" label="电话">
+      </el-table-column>
+
+      <el-table-column prop="date" label="创建时间">
+        <template slot-scope="scope"><span style="margin-left: 10px">{{ scope.row.date }}</span></template>
+      </el-table-column>
+
+      <el-table-column label="用户状态">
+        <template slot-scope="scope">
+          <el-switch @change="changeMgState(scope.row)" v-model="scope.row.mg_state" active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editMbDia(scope.row)">
+          </el-button>
+
+          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleMb(scope.row)">
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-dialog :visible.sync="dialogFormVisibleAdd">
+      <h2>{{form._id ? '编辑' : '添加'}}会员</h2>
+      <el-form :model="form" :rules="rules" ref="form">
+        <el-form-item label="用户名" prop="mb_name" label-width="100px">
+          <el-input v-model="form.mb_name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="mb_email" label-width="100px">
+          <el-input v-model="form.mb_email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="mb_mobile" label-width="100px">
+          <el-input v-model="form.mb_mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
+        <el-button type="primary" @click="addUser()">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+      :current-page.sync="paginations.page_index" :page-sizes="paginations.page_sizes"
+      :page-size="paginations.page_size" :layout="paginations.layout" :total="paginations.total">
+    </el-pagination>
+
+  </el-card>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        form: { },
+        rules: {
+          mb_name: [{
+              required: true,
+              message: '会员名称不能为空',
+              trigger: 'blur'
+            },
+            {
+              min: 2,
+              max: 16,
+              message: '长度在2-16个字符之间',
+              trigger: 'blur'
+            }
+          ],
+          mb_email: [{
+              type: 'email',
+              required: true,
+              message: '邮箱格式不正确',
+              trigger: 'blur'
+            },
+           
+          ],
+          mb_mobile: [{
+              required: true,
+              message: '手机号不能为空',
+              trigger: 'blur'
+            },
+            {
+              min: 6,
+              max: 16,
+              message: '电话号码必须是11位',
+              trigger: 'blur'
+            }
+          ]
+        },
+        paginations: {
+          page_index: 1, //当前位于多少页
+          total: 0, //总数
+          page_size: 5, //一页显示多少条
+          page_sizes: [5, 10, 15], //每页显示多少条
+          layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
+        },
+        queryInfo: {
+          query: '',
+          pagenum: 1,
+          pagesize: 2,
+        },
+        allitems: [],
+        items: [],
+        dialogFormVisibleAdd: false,
+
+      }
+
+    },
+    methods: {
+
+
+      //修改会员
+
+      editMbDia(row) {
+        this.form = row
+
+        this.dialogFormVisibleAdd = true
+      },
+
+
+      //添加会员
+      showAddUserDia() {
+        this.form = {}
+        this.dialogFormVisibleAdd = true
+      },
+      // submitForm(formName) {
+      //   this.$refs[formName].validate((valid) => {
+      //       if (valid) {
+      async addUser() {
+        this.dialogFormVisibleAdd = false
+
+        if (this.form._id) {
+          await this.$http.put(`rest/members/${this.form._id}`, this.form)
+        } else {
+          await this.$http.post('rest/members', this.form)
+        }
+        this.$router.push('/members')
+        this.$message({
+          type: 'success',
+          message: '保存成功'
+        });
+        this.fetch()
+       
+      },
+      //获取会员列表
+      async fetch() {
+        const res = await this.$http.get('rest/members')
+        //this.items = res.data
+        this.allitems = res.data
+        this.setPaginations()
+      },
+      //分页
+      setPaginations() {
+        this.paginations.total = this.allitems.length
+        this.paginations.page_index = 1
+        this.paginations.page_size = 5
+        //设置默认分页数据
+        this.items = this.allitems.filter((item, index) => {
+          return index < this.paginations.page_size
+        })
+      },
+      handleSizeChange(page_size) {
+        this.paginations.page_index = 1
+        this.paginations.page_size = page_size
+        this.items = this.allitems.filter((item, index) => {
+          return index < page_size
+        })
+      },
+      handleCurrentChange(page) {
+        //获取当前页
+        let index = this.paginations.page_size * (page - 1)
+        //数据总数
+        let nums = this.paginations.page_size * page
+        let tables = []
+        for (let i = index; i < nums; i++) {
+          if (this.allitems[i]) {
+            tables.push(this.allitems[i])
+          }
+          this.items = tables
+        }
+      },
+      //删除会员
+      async deleMb(row) {
+
+        this.$confirm(`确定删除 "${row.mb_name}" 用户? `, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          await this.$http.delete(`rest/members/${row._id}`)
+          // console.log(res)
+          //   if (res.data.meta.status === 200) {
+          //     this.queryInfo.pagenum = 1
+
+          this.$message({
+            type: 'success',
+            message: "删除成功"
+
+          });
+          this.fetch()
+
+        })
+      }
+
+    },
+    created() {
+      this.fetch()
+    }
+
+  }
+</script>
+
+<style>
+  .box-card {
+    height: 100%;
+  }
+
+  .inputSearch {
+    width: 300px;
+  }
+
+  .searchRow {
+    margin-top: 20px;
+  }
+</style>
