@@ -3,13 +3,12 @@
     <el-form 
     class="login-form"
     label-position="top"
-     label-width="80px" 
-     :rules="rules" ref="loginForm">
+     label-width="80px">
      <h2>用户登录</h2>
-      <el-form-item label="用户名" prop="username">
+      <el-form-item label="用户名" >
         <el-input v-model="model.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="密码">
         <el-input type="password" v-model="model.password" placeholder="请输入密码"></el-input>
       </el-form-item>
      <el-button  @click.prevent = "handleLogin()" 
@@ -27,16 +26,7 @@
                 username: '',
                 password: ''
            },
-            rules:{
-                username:[
-                    {required:true,message:'请输入用户名',trigger:'blur'},
-                    {min:2,max:16,message:'长度在2-16个字符之间',trigger:'blur'}
-                ],
-                password:[
-                    {required:true,message:'请输入密码',trigger:'blur'},
-                    {min:6,max:16,message:'长度在6-16之间',trigger:'blur'}
-                ],
-            }
+           
        }
    },
    methods: {

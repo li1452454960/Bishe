@@ -8,9 +8,6 @@
 
     <el-row class="searchRow">
       <el-col>
-        <el-input @clear="loadUserList" clearable placeholder="请输入内容" v-model="queryInfo.query" class="inputSearch">
-          <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
-        </el-input>
         <el-button @click="showAddToysDia()" type="success">添加类型</el-button>
       </el-col>
     </el-row>
@@ -65,11 +62,7 @@
   export default {
     data() {
       return {
-        queryInfo: {
-          query: '',
-          pagenum: 1,
-          pagesize: 2,
-        },
+        
         items: [],
         dialogFormVisibleAdd: false,
         form: {},

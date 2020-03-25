@@ -18,6 +18,10 @@ module.exports = app => {
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
     res.send(model)
   })
+  router.put('/:id/state/:state', async (req, res) => {
+    const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
+    res.send(model)
+  })
 //获取列表接口
     router.get('/',  async (req,res) =>{
      

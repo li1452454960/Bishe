@@ -8,6 +8,7 @@ import MembersPoint from '../views/members/membersPoint.vue'
 import Members from '../views/members/members.vue'
 import Toys from '../views/toys/toys.vue'
 import ToysType from '../views/toys/toysType.vue'
+import ToysEdit from '../views/toys/toysEdit.vue'
 import UsersType from '../views/users/usersType.vue'
 import AdminUserEdit from '../views/users/AdminUserEdit.vue'
 import AdminUserList from '../views/users/AdminUserList.vue'
@@ -34,12 +35,14 @@ const router = new Router({
       {path: '/members',component:  Members } ,
 
       {path: '/toys',component:  Toys },
-
+      
+      {path: '/toysCreate', component: ToysEdit },
+      {path: '/toysEdit/:id', component: ToysEdit, props: true },
       {path: '/toysType',component:  ToysType },
 
-      { path: '/usersCreate', component: AdminUserEdit },
-      { path: '/usersEdit/:id', component: AdminUserEdit, props: true },
-      { path: '/usersList', component: AdminUserList },
+      {path: '/usersCreate', component: AdminUserEdit },
+      {path: '/usersEdit/:id', component: AdminUserEdit, props: true },
+      {path: '/usersList', component: AdminUserList },
       
       {path: '/usersType',component:  UsersType },
 

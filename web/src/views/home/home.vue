@@ -58,6 +58,10 @@
               <i class="el-icon-location"></i>
               <span>玩具列表</span>
             </el-menu-item>
+            <el-menu-item index="toysCreate">
+              <i class="el-icon-location"></i>
+              <span>玩具上架</span>
+            </el-menu-item>
             <el-menu-item index="toysType">
               <i class="el-icon-location"></i>
               <span>玩具分类</span>

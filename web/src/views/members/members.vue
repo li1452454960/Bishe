@@ -8,7 +8,7 @@
 
     <el-row class="searchRow">
       <el-col>
-        <el-input @clear="loadUserList" clearable placeholder="请输入内容" v-model="queryInfo.query" class="inputSearch">
+        <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query" class="inputSearch">
           <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button @click="showAddUserDia()" type="success">添加用户</el-button>
@@ -31,7 +31,7 @@
 
       <el-table-column label="用户状态">
         <template slot-scope="scope">
-          <el-switch @change="changeMgState(scope.row)" v-model="scope.row.mg_state" active-color="#13ce66"
+          <el-switch @change="changeState(scope.row)" v-model="scope.row.mb_state" active-color="#13ce66"
             inactive-color="#ff4949">
           </el-switch>
         </template>
@@ -122,11 +122,9 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
-        queryInfo: {
-          query: '',
-          pagenum: 1,
-          pagesize: 2,
-        },
+        
+        query: '',
+        queryData: [], 
         allitems: [],
         items: [],
         dialogFormVisibleAdd: false,
@@ -137,6 +135,35 @@
     methods: {
 
 
+ //修改用户状态
+     async changeState() {
+       if (this.form._id) {
+          await this.$http.put(`rest/members/${this.form._id}`, this.form.mb_state)
+        } 
+      },
+      //搜索用户
+            searchUser() {
+             if (this.query === '') {
+                    this.$message({
+                        type: "warning",
+                        message: "请输入搜索用户名"
+                    })
+                    this.fetch();
+                    return
+                }
+
+                this.allitems = this.queryData.filter(item => {
+
+                    let mbName = item.mb_name
+
+                    return this.query === mbName
+
+                })
+                this.setPaginations()
+            },
+            loadUserList() {
+                this.fetch();
+            },
       //修改会员
 
       editMbDia(row) {
@@ -172,8 +199,12 @@
       },
       //获取会员列表
       async fetch() {
-        const res = await this.$http.get('rest/members')
-        //this.items = res.data
+        let val = {
+        username: this.query //把搜索框的值传给后端
+      };
+
+        const res = await this.$http.get('rest/members',val)
+        this.queryData = res.data
         this.allitems = res.data
         this.setPaginations()
       },
