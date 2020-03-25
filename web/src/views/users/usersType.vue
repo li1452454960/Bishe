@@ -22,8 +22,8 @@
       </el-table-column>
 
 
-      <el-table-column prop="ust_time" label="创建时间">
-        <template slot-scope="scope"> {{scope.row.create_time | fmtdate}} </template>
+      <el-table-column prop="date" label="创建时间">
+        <template slot-scope="scope"> {{scope.row.date | fmtdate}} </template>
       </el-table-column>
 
       <el-table-column label="操作">

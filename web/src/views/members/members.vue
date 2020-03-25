@@ -8,9 +8,15 @@
 
     <el-row class="searchRow">
       <el-col>
-        <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query" class="inputSearch">
-          <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+         <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
+       - <el-select @input="loadUserList()"  clearable  placeholder="请选择性别" v-model="query.mb_sex" class="selectSearch">
+          <el-option label="男" value="男"></el-option>
+          <el-option label="女" value="女"></el-option>
+        </el-select>
+        
+        <template>
+          <el-button type="info" @click="searchUser" icon="el-icon-search"></el-button>
+        </template>
         <el-button @click="showAddUserDia()" type="success">添加用户</el-button>
       </el-col>
     </el-row>
@@ -20,13 +26,19 @@
       </el-table-column>
       <el-table-column prop="mb_name" label="姓名" width="80">
       </el-table-column>
+      <el-table-column prop="mb_sex" label="性别" width="80">
+      </el-table-column>
+      <el-table-column prop="mb_age" label="年龄" width="80">
+      </el-table-column>
+      <el-table-column prop="mb_hobby" label="兴趣爱好">
+      </el-table-column>
       <el-table-column prop="mb_email" label="邮箱">
       </el-table-column>
       <el-table-column prop="mb_mobile" label="电话">
       </el-table-column>
 
       <el-table-column prop="date" label="创建时间">
-        <template slot-scope="scope"><span style="margin-left: 10px">{{ scope.row.date }}</span></template>
+        <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
       <el-table-column label="用户状态">
@@ -54,6 +66,19 @@
         <el-form-item label="用户名" prop="mb_name" label-width="100px">
           <el-input v-model="form.mb_name" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="性别" label-width="100px">
+          <el-select v-model="form.mb_sex">
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
+
+          </el-select>
+        </el-form-item>
+        <el-form-item label="年龄" prop="mb_age" label-width="100px">
+          <el-input v-model="form.mb_age" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="兴趣爱好" prop="mb_hobby" label-width="100px">
+          <el-input v-model="form.mb_hobby" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="邮箱" prop="mb_email" label-width="100px">
           <el-input v-model="form.mb_email" autocomplete="off"></el-input>
         </el-form-item>
@@ -63,8 +88,8 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="addUser()">确 定</el-button>
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addUser()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -80,7 +105,7 @@
   export default {
     data() {
       return {
-        form: { },
+        form: {},
         rules: {
           mb_name: [{
               required: true,
@@ -100,7 +125,7 @@
               message: '邮箱格式不正确',
               trigger: 'blur'
             },
-           
+
           ],
           mb_mobile: [{
               required: true,
@@ -122,9 +147,12 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
-        
-        query: '',
-        queryData: [], 
+
+        query: {
+          mb_name: '',
+          mb_sex: ''
+        },
+        queryData: [],
         allitems: [],
         items: [],
         dialogFormVisibleAdd: false,
@@ -135,35 +163,45 @@
     methods: {
 
 
- //修改用户状态
-     async changeState() {
-       if (this.form._id) {
-          await this.$http.put(`rest/members/${this.form._id}`, this.form.mb_state)
-        } 
+      //修改用户状态
+      async changeState(member) {
+
+        await this.$http.put(`rest/members/${member._id}/state/${member.mb_state} `)
+
       },
       //搜索用户
-            searchUser() {
-             if (this.query === '') {
-                    this.$message({
-                        type: "warning",
-                        message: "请输入搜索用户名"
-                    })
-                    this.fetch();
-                    return
-                }
+      searchUser() {
+        if (this.query.mb_name === '' && this.query.mb_sex === '') {
+          this.$message({
+            type: "warning",
+            message: "请输入搜索内容"
+          })
+          this.fetch();
+          return
+        }
 
-                this.allitems = this.queryData.filter(item => {
 
-                    let mbName = item.mb_name
+        this.allitems = this.queryData.filter(item => {
 
-                    return this.query === mbName
+          let mbName = item.mb_name
+          let mbSex = item.mb_sex
+          if (this.query.mb_name) {
+            return this.query.mb_name === mbName
+          } else
+          if (this.query.mb_name) {
+            return this.query.mb_name === mbName
+          } else
+          if (this.query.mb_name && this.query.mb_sex) {
+            return this.query.mb_name === mbName && this.query.mb_sex === mbSex
+          }
 
-                })
-                this.setPaginations()
-            },
-            loadUserList() {
-                this.fetch();
-            },
+
+        })
+        this.setPaginations()
+      },
+      loadUserList() {
+        this.fetch();
+      },
       //修改会员
 
       editMbDia(row) {
@@ -195,15 +233,15 @@
           message: '保存成功'
         });
         this.fetch()
-       
+
       },
       //获取会员列表
       async fetch() {
         let val = {
-        username: this.query //把搜索框的值传给后端
-      };
+          username: this.query //把搜索框的值传给后端
+        };
 
-        const res = await this.$http.get('rest/members',val)
+        const res = await this.$http.get('rest/members', val)
         this.queryData = res.data
         this.allitems = res.data
         this.setPaginations()
@@ -269,15 +307,19 @@
   }
 </script>
 
-<style>
+  
+
+<style >
   .box-card {
     height: 100%;
   }
 
   .inputSearch {
-    width: 300px;
+    width: 200px;
   }
-
+  .selectSearch {
+    width: 200px;
+  }
   .searchRow {
     margin-top: 20px;
   }

@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
   },
   icon: { type: String },
   parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'userType'},
+  date: {type:Date,default:Date.now}  ,
 })
 
 module.exports = mongoose.model('AdminUser', schema)

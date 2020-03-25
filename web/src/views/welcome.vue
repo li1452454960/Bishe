@@ -19,7 +19,7 @@
   height: 100%;
   box-sizing: border-box;
   padding-top: 100px;
-  background-color: rgba(252, 252, 253, 0.5);
+  background-color: rgba(252, 252, 253, 0.1);
   text-align: center;
   color: #b3c0d1;
 }

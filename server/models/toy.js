@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'toyType'},
     ty_price: {type: Number },
     ty_number: {type: Number},
-    ty_time: {type: Number},
+    date: {type:Date,default:Date.now},
 
     ty_brand: {type: String },//品牌
     ty_age: [{type: String }],//适用年龄

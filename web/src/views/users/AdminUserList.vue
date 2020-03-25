@@ -29,6 +29,9 @@
 
             <el-table-column prop="parent.ust_name" label="用户类型" width="100">
             </el-table-column>
+            <el-table-column prop="date" label="创建时间">
+        <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
+      </el-table-column>
             <el-table-column fixed="right" label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button size="mini" plain type="primary" icon="el-icon-edit" circle
@@ -156,7 +159,7 @@
     }
 
     .inputSearch {
-        width: 300px;
+        width: 200px;
     }
 
     .searchRow {
