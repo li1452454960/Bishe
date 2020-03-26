@@ -35,7 +35,7 @@
             <el-input v-model="model.ty_model" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="适用年龄" label-width="100px">
-            <el-select v-model="model.ty_age" multiple="ture">
+            <el-select v-model="model.ty_age" multiple>
               <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.label"></el-option>
             </el-select>
           </el-form-item>
@@ -76,6 +76,12 @@
           
         </el-tab-pane>
 
+        <el-tab-pane label="玩具描述" name="describe">
+          <el-form-item label="玩具详情描述" label-width="100px">
+            <vue-editor v-model="model.ty_describe" ></vue-editor>
+          </el-form-item>
+        </el-tab-pane>
+
       </el-tabs>
 
       <el-form-item style="text-align:right; ">
@@ -89,10 +95,15 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
+
   export default {
     props: {
       id: {}
     },
+    components: {
+    VueEditor
+  },
     data() {
       return {
         parents: [],
@@ -183,6 +194,5 @@
   }
 </script>
 <style>
-
-
+ 
 </style>

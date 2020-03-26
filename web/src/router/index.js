@@ -12,6 +12,8 @@ import ToysEdit from '../views/toys/toysEdit.vue'
 import UsersType from '../views/users/usersType.vue'
 import AdminUserEdit from '../views/users/AdminUserEdit.vue'
 import AdminUserList from '../views/users/AdminUserList.vue'
+import Sales from '../views/orders/sales.vue'
+import Stocks from '../views/orders/stocks.vue'
 
 Vue.use(Router)
 
@@ -35,9 +37,9 @@ const router = new Router({
       {path: '/members',component:  Members } ,
 
       {path: '/toys',component:  Toys },
-      
       {path: '/toysCreate', component: ToysEdit },
       {path: '/toysEdit/:id', component: ToysEdit, props: true },
+
       {path: '/toysType',component:  ToysType },
 
       {path: '/usersCreate', component: AdminUserEdit },
@@ -45,6 +47,10 @@ const router = new Router({
       {path: '/usersList', component: AdminUserList },
       
       {path: '/usersType',component:  UsersType },
+
+      {path: '/sales',component:  Sales } ,
+
+      {path: '/stocks',component:  Stocks } ,
 
     ]
     },

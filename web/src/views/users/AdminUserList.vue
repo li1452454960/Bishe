@@ -8,10 +8,11 @@
 
         <el-row class="searchRow">
             <el-col>
-                <el-input @input="handlChange()"  clearable placeholder="请输入用户名" v-model="query"
+               用户名: <el-input @input="handlChange()"  clearable placeholder="请输入用户名" v-model="query"
                     class="inputSearch">
                     <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
                 </el-input>
+                
                 <el-button @click="$router.push('/usersCreate')" type="success">添加用户</el-button>
             </el-col>
         </el-row>
@@ -153,7 +154,7 @@
     };
 </script>
 
-<style>
+<style scope>
     .box-card {
         height: 100%;
     }

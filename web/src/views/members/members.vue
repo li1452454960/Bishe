@@ -8,11 +8,12 @@
 
     <el-row class="searchRow">
       <el-col>
-         <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
-       - <el-select @input="loadUserList()"  clearable  placeholder="请选择性别" v-model="query.mb_sex" class="selectSearch">
-          <el-option label="男" value="男"></el-option>
-          <el-option label="女" value="女"></el-option>
-        </el-select>
+      姓名: <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
+      性别: <el-select  @input="loadUserList()"  clearable placeholder="请输入性别" v-model="query.mb_sex" class="selectSearch">
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option> 
+            </el-select>
+        
         
         <template>
           <el-button type="info" @click="searchUser" icon="el-icon-search"></el-button>
@@ -156,7 +157,7 @@
         allitems: [],
         items: [],
         dialogFormVisibleAdd: false,
-
+        
       }
 
     },
@@ -188,10 +189,11 @@
           if (this.query.mb_name) {
             return this.query.mb_name === mbName
           } else
-          if (this.query.mb_name) {
-            return this.query.mb_name === mbName
+          if (this.query.mb_sex) {
+            return this.query.mb_sex === mbSex
           } else
-          if (this.query.mb_name && this.query.mb_sex) {
+           if (this.query.mb_name && this.query.mb_sex) 
+          {
             return this.query.mb_name === mbName && this.query.mb_sex === mbSex
           }
 
@@ -237,11 +239,11 @@
       },
       //获取会员列表
       async fetch() {
-        let val = {
-          username: this.query //把搜索框的值传给后端
-        };
+        // let val = {
+        //   username: this.query //把搜索框的值传给后端
+        // };
 
-        const res = await this.$http.get('rest/members', val)
+        const res = await this.$http.get('rest/members')
         this.queryData = res.data
         this.allitems = res.data
         this.setPaginations()
@@ -309,7 +311,7 @@
 
   
 
-<style >
+<style scope>
   .box-card {
     height: 100%;
   }

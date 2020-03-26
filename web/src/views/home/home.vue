@@ -29,7 +29,7 @@
               <span>用户管理</span>
             </template>
             <el-menu-item index="/usersList"><span>用户列表</span></el-menu-item>
-            <el-menu-item index="/usersCreate"><span>新建用户</span></el-menu-item>
+            
             <el-menu-item index="/usersType"><span>用户类型</span></el-menu-item>
           </el-submenu>
 
@@ -58,10 +58,7 @@
               <i class="el-icon-location"></i>
               <span>玩具列表</span>
             </el-menu-item>
-            <el-menu-item index="toysCreate">
-              <i class="el-icon-location"></i>
-              <span>玩具上架</span>
-            </el-menu-item>
+            
             <el-menu-item index="toysType">
               <i class="el-icon-location"></i>
               <span>玩具分类</span>
@@ -74,11 +71,11 @@
               <i class="el-icon-location"></i>
               <span>销售管理</span>
             </template>
-            <el-menu-item index="5-1">
+            <el-menu-item index="sales">
               <i class="el-icon-location"></i>
               <span>销售订单</span>
             </el-menu-item>
-            <el-menu-item index="5-2">
+            <el-menu-item index="stocks">
               <i class="el-icon-location"></i>
               <span>订购订单</span>
             </el-menu-item>

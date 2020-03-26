@@ -191,7 +191,7 @@
   }
 
   .inputSearch {
-    width: 300px;
+    width: 200px;
   }
 
   .searchRow {

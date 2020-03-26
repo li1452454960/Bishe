@@ -18,6 +18,7 @@ const schema = new mongoose.Schema({
     ty_age: [{type: String }],//适用年龄
     ty_warranty: {type: String },//保修期
     ty_model: {type: String },//颜色分类
+    ty_describe: {type: String },
     
 
 })

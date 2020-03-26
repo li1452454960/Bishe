@@ -8,9 +8,14 @@
 
     <el-row class="searchRow">
       <el-col>
-        <el-input @input="loadUserList()" clearable placeholder="请输入内容" v-model="query" class="inputSearch">
-          <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+        
+      玩具名称: <el-input @input="loadUserList()" clearable placeholder="请输入名称" v-model="query.ty_name" class="inputSearch"></el-input>
+      单价: <el-input  clearable placeholder="请输入单价" v-model="query.ty_price" class="inputSearch"></el-input>
+        
+        
+        <template>
+          <el-button type="info" @click="searchUser" icon="el-icon-search"></el-button>
+        </template>
         <el-button @click="$router.push('/toysCreate')" type="success">上架玩具</el-button>
       </el-col>
     </el-row>
@@ -60,6 +65,11 @@
   export default {
     data() {
       return {
+        form: {},
+        query: {
+          ty_name: '',
+          ty_price: ''
+        },
         paginations: {
           page_index: 1, //当前位于多少页
           total: 0, //总数
@@ -69,11 +79,10 @@
         },
         parents: [],
         parent: [],
-        query: '',
         queryData: [],
         allitems: [],
         items: [],
-        form: {},
+        
 
 
       }
@@ -82,35 +91,42 @@
     created() {
 
       this.fetch();
-      this.getParents();
+     
     },
 
     methods: {
       //搜索用户
       searchUser() {
-        if (this.query === '') {
+         if (this.query.ty_name === '' && this.query.ty_price === '') {
           this.$message({
             type: "warning",
-            message: "请输入搜索玩具名称"
+            message: "请输入搜索内容"
           })
           this.fetch();
           return
         }
-
         this.allitems = this.queryData.filter(item => {
 
           let tyName = item.ty_name
+          let tyPrice = item.ty_price
+          if (this.query.ty_name) {
+            return this.query.ty_name === tyName
+          } else
+          if (this.query.ty_price) {
+            return this.query.ty_price === tyPrice
+          } else
+           if (this.query.ty_name && this.query.ty_price) 
+          {
+            return this.query.ty_name === tyName && this.query.ty_price === tyPrice
+          }
 
-          return this.query === tyName
 
         })
         this.setPaginations()
-
       },
       loadUserList() {
-        if (this.query === "") {
+        
           this.fetch();
-        }
       },
 
       //获取会员列表
@@ -181,13 +197,13 @@
   }
 </script>
 
-<style>
+<style scope>
   .box-card {
     height: 100%;
   }
 
   .inputSearch {
-    width: 300px;
+    width: 200px;
   }
 
   .searchRow {

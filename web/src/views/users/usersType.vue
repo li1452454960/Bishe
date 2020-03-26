@@ -137,13 +137,9 @@
   }
 </script>
 
-<style>
+<style scope>
   .box-card {
     height: 100%;
-  }
-
-  .inputSearch {
-    width: 300px;
   }
 
   .searchRow {
