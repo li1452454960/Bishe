@@ -9,7 +9,7 @@
     <el-row class="searchRow">
       <el-col>
         
-        <el-button @click="showAddToysDia()" type="success">添加分类</el-button>
+        <el-button @click="showAddToysDia()" type="success" style="float: right;">添加分类</el-button>
       </el-col>
     </el-row>
 
@@ -185,7 +185,7 @@
   }
 </script>
 
-<style scope>
+<style scoped >
   .box-card {
     height: 100%;
   }

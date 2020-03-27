@@ -185,7 +185,7 @@
   }
 </script>
 
-<style scope>
+<style scoped>
   .box-card {
     height: 100%;
   }

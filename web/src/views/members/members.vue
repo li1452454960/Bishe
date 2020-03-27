@@ -9,14 +9,9 @@
     <el-row class="searchRow">
       <el-col>
       姓名: <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
-      性别: <el-select  @input="loadUserList()"  clearable placeholder="请输入性别" v-model="query.mb_sex" class="selectSearch">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option> 
-            </el-select>
-        
-        
-        <template>
-          <el-button type="info" @click="searchUser" icon="el-icon-search"></el-button>
+      年龄: <el-input  @input="loadUserList()"  clearable placeholder="请输入年龄" v-model="query.mb_age" class="inputSearch"></el-input>
+            <template>
+          <el-button type="info" @click="searchUser()" icon="el-icon-search"></el-button>
         </template>
         <el-button @click="showAddUserDia()" type="success">添加用户</el-button>
       </el-col>
@@ -151,7 +146,7 @@
 
         query: {
           mb_name: '',
-          mb_sex: ''
+          mb_age: ''
         },
         queryData: [],
         allitems: [],
@@ -165,14 +160,14 @@
 
 
       //修改用户状态
-      async changeState(member) {
+      // async changeState(member) {
 
-        await this.$http.put(`rest/members/${member._id}/state/${member.mb_state} `)
+      //   await this.$http.put(`rest/members/${member._id}/state/${member.mb_state} `)
 
-      },
+      // },
       //搜索用户
       searchUser() {
-        if (this.query.mb_name === '' && this.query.mb_sex === '') {
+        if (this.query.mb_name === '' && this.query.mb_age === '') {
           this.$message({
             type: "warning",
             message: "请输入搜索内容"
@@ -180,21 +175,19 @@
           this.fetch();
           return
         }
-
-
         this.allitems = this.queryData.filter(item => {
 
           let mbName = item.mb_name
-          let mbSex = item.mb_sex
+          let mbAge = item.mb_age.toString()
           if (this.query.mb_name) {
             return this.query.mb_name === mbName
           } else
-          if (this.query.mb_sex) {
-            return this.query.mb_sex === mbSex
+          if (this.query.mb_age) {
+            return this.query.mb_age === mbAge
           } else
-           if (this.query.mb_name && this.query.mb_sex) 
+            if (this.query.mb_name && this.query.mb_age) 
           {
-            return this.query.mb_name === mbName && this.query.mb_sex === mbSex
+            return this.query.mb_name === mbName && this.query.mb_age === mbAge
           }
 
 
@@ -311,15 +304,12 @@
 
   
 
-<style scope>
+<style scoped>
   .box-card {
     height: 100%;
   }
 
   .inputSearch {
-    width: 200px;
-  }
-  .selectSearch {
     width: 200px;
   }
   .searchRow {

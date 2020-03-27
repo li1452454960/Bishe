@@ -1,7 +1,7 @@
 <template>
 
   <div class="about">
-    <h1>{{id ? '编辑' : '新建'}}玩具</h1>
+    <h1>{{id ? '编辑' : '上架'}}玩具</h1>
     <el-form label-width="120px" @submit.native.prevent="save" :rules="rules" ref="model">
       <el-tabs value="basic" type="border-card">
 
@@ -54,11 +54,16 @@
           <el-row type="flex" style="flex-wrap: wrap">
             <el-col :md="12" v-for="(item, i) in model.pictures" :key="i">
          
-          <el-form-item label="名称">
-                <el-input v-model="item.ty_position"></el-input>
-              
+          <el-form-item label="展示方位">
+              <el-select v-model="item.ty_position" style="width:200px">
+            <el-option label="正面" value="正面"></el-option>
+            <el-option label="背面" value="背面"></el-option>
+            <el-option label="侧面" value="侧面"></el-option>
+            <el-option label="顶部" value="顶部"></el-option>
+            <el-option label="底部" value="底部"></el-option>
+          </el-select>
               </el-form-item>
-          <el-form-item label="图片" label-width="100px">
+          <el-form-item label="图片" >
             <el-upload class="avatar-uploader" 
             :action="uploadUrl" 
             :headers="getAuthHeaders()" 
@@ -193,6 +198,31 @@ import { VueEditor } from "vue2-editor";
     }
   }
 </script>
-<style>
- 
+<style  >
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 600px;
+    height: 450px;
+    line-height: 450px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 600px;
+    height: 450px;
+    display: block;
+  }
 </style>

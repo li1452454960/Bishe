@@ -10,7 +10,7 @@
       <el-col>
         
       玩具名称: <el-input @input="loadUserList()" clearable placeholder="请输入名称" v-model="query.ty_name" class="inputSearch"></el-input>
-      单价: <el-input  clearable placeholder="请输入单价" v-model="query.ty_price" class="inputSearch"></el-input>
+      单价: <el-input @input="loadUserList()"  clearable placeholder="请输入单价" v-model="query.ty_price" class="inputSearch"></el-input>
         
         
         <template>
@@ -23,13 +23,16 @@
     <el-table :data="items">
       <el-table-column type="index" label="序号" width="60">
       </el-table-column>
-      <el-table-column prop="_id" label="编号" >
+      <el-table-column prop="_id" label="编号" width="150" >
       </el-table-column>
       <el-table-column prop="ty_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="parent.tyt_name" label="玩具分类" width="100">
       </el-table-column>
       <el-table-column prop="ty_price" label="单价" width="100">
+      <template slot-scope="scope">
+        <span style="color:#4db3ff">{{ scope.row.ty_price }}元</span>
+        </template>
       </el-table-column>
       <el-table-column prop="ty_number" label="库存" width="100">
       </el-table-column>
@@ -108,7 +111,7 @@
         this.allitems = this.queryData.filter(item => {
 
           let tyName = item.ty_name
-          let tyPrice = item.ty_price
+          let tyPrice = item.ty_price.toString()
           if (this.query.ty_name) {
             return this.query.ty_name === tyName
           } else
@@ -197,7 +200,7 @@
   }
 </script>
 
-<style scope>
+<style scoped>
   .box-card {
     height: 100%;
   }
@@ -210,30 +213,4 @@
     margin-top: 20px;
   }
 
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 5rem;
-    height: 5rem;
-    line-height: 5rem;
-    text-align: center;
-  }
-
-  .avatar {
-    width: 5rem;
-    height: 5rem;
-    display: block;
-  }
 </style>
