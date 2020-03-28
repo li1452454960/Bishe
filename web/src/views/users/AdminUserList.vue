@@ -19,7 +19,7 @@
 
 
         <el-table :data="items">
-            <el-table-column type="index" label="ID" width="80"></el-table-column>
+            <el-table-column type="index" label="#" width="80"></el-table-column>
             <el-table-column prop="icon" label="头像" width="100">
                 <template slot-scope="scope">
                     <img :src="scope.row.icon" style="height:3rem;">

@@ -13,7 +13,7 @@
     </el-row>
 
     <el-table :data="items">
-      <el-table-column type="index" label="ID" width="60">
+      <el-table-column type="index" label="#" width="60">
       </el-table-column>
       <el-table-column prop="ust_name" label="类型名称" width="100">
       </el-table-column>

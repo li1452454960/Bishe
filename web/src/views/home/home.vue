@@ -73,11 +73,11 @@
             </template>
             <el-menu-item index="sales">
               <i class="el-icon-location"></i>
-              <span>销售订单</span>
+              <span>玩具销售</span>
             </el-menu-item>
             <el-menu-item index="stocks">
               <i class="el-icon-location"></i>
-              <span>订购订单</span>
+              <span>玩具入库</span>
             </el-menu-item>
           </el-submenu>
 

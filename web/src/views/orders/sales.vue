@@ -23,8 +23,8 @@
       </el-form>
     </el-row>
 
-    <el-tabs type="border-card">
-      <el-tab-pane label="全部订单">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="searchOrder" style="height:650px; overflow:auto;">
+      <el-tab-pane label="全部订单" name="order">
         <el-table :data="items">
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
@@ -47,78 +47,44 @@
             </template>
           </el-table-column>
           <el-table-column prop="sl_payment" label="是否付款" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_delivery" label="是否发货" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_receive" label="是否确认收货" width="110">
-          </el-table-column>
-          <el-table-column prop="date" label="下单时间">
-            <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
-          </el-table-column>
-
-          <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
-              </el-button>
-              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
-              </el-button>
+              <span v-if="scope.row.sl_payment==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_payment }}</span>
+              </span>
+              <span v-if="scope.row.sl_payment==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_payment }}</span>
+              </span>
             </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="待支付" @click="searchPay">
-        <el-table :data="items">
-          <el-table-column type="index" label="#" width="60">
-          </el-table-column>
-          <el-table-column prop="_id" label="订单编号" width="150">
-          </el-table-column>
-          <el-table-column prop="sl_name" label="商品名称" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_number" label="数量" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_unit" label="单位" width="100">
-          </el-table-column>
-          <el-table-column prop="ty_price" label="单价" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_totalPrice" label="总额" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_payment" label="是否付款" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_delivery" label="是否发货" width="100">
-          </el-table-column>
-          <el-table-column prop="date" label="下单时间">
-            <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
-          </el-table-column>
-
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
-              </el-button>
-              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="待发货">
-        <el-table :data="items">
-          <el-table-column type="index" label="#" width="60">
-          </el-table-column>
-          <el-table-column prop="_id" label="订单编号" width="150">
-          </el-table-column>
-          <el-table-column prop="sl_name" label="商品名称" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_number" label="数量" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_unit" label="单位" width="100">
-          </el-table-column>
-          <el-table-column prop="ty_price" label="单价" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_totalPrice" label="总额" width="100">
-          </el-table-column>
-          <el-table-column prop="sl_payment" label="是否付款" width="100">
           </el-table-column>
           <el-table-column prop="sl_payType" label="付款方式" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_payType==='微信支付'">
+                <span style="color:#00d053">{{ scope.row.sl_payType }}</span>
+              </span>
+              <span v-if="scope.row.sl_payType==='支付宝'">
+                <span style="color:#4db3ff">{{ scope.row.sl_payType }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_delivery" label="是否发货" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_delivery==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_delivery }}</span>
+              </span>
+              <span v-if="scope.row.sl_delivery==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_delivery }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_receive" label="待确认收货" width="110">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_receive==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_receive }}</span>
+              </span>
+              <span v-if="scope.row.sl_receive==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_receive }}</span>
+              </span>
+            </template>
           </el-table-column>
           <el-table-column prop="date" label="下单时间">
             <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
@@ -134,7 +100,187 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="待确认收货">
+      <el-tab-pane label="待支付" name="pay">
+        <el-table :data="items">
+          <el-table-column type="index" label="#" width="60">
+          </el-table-column>
+          <el-table-column prop="_id" label="订单编号" width="150">
+          </el-table-column>
+          <el-table-column prop="sl_name" label="商品名称" width="100">
+          </el-table-column>
+          <el-table-column prop="sl_number" label="数量" width="100">
+          </el-table-column>
+          <el-table-column prop="sl_unit" label="单位" width="100">
+          </el-table-column>
+          <el-table-column prop="ty_price" label="单价" width="100">
+            <template slot-scope="scope">
+              <span style="color:#4db3ff">{{ scope.row.ty_price }}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_totalPrice" label="总额" width="100">
+            <template slot-scope="scope">
+              <span style="color:#00d053">{{ scope.row.sl_totalPrice }}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_payment" label="是否付款" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_payment==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_payment }}</span>
+              </span>
+              <span v-if="scope.row.sl_payment==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_payment }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_delivery" label="是否发货" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_delivery==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_delivery }}</span>
+              </span>
+              <span v-if="scope.row.sl_delivery==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_delivery }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_receive" label="待确认收货" width="110">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_receive==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_receive }}</span>
+              </span>
+              <span v-if="scope.row.sl_receive==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_receive }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="date" label="下单时间">
+            <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
+          </el-table-column>
+
+
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
+              </el-button>
+              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="待发货" name="delivery">
+        <el-table :data="items">
+          <el-table-column type="index" label="#" width="60">
+          </el-table-column>
+          <el-table-column prop="_id" label="订单编号" width="150">
+          </el-table-column>
+          <el-table-column prop="sl_name" label="商品名称" width="100">
+          </el-table-column>
+          <el-table-column prop="sl_number" label="数量" width="100">
+          </el-table-column>
+          <el-table-column prop="sl_unit" label="单位" width="100">
+          </el-table-column>
+          <el-table-column prop="ty_price" label="单价" width="100">
+            <template slot-scope="scope">
+              <span style="color:#4db3ff">{{ scope.row.ty_price }}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_totalPrice" label="总额" width="100">
+            <template slot-scope="scope">
+              <span style="color:#00d053">{{ scope.row.sl_totalPrice }}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_payType" label="付款方式" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_payType==='微信支付'">
+                <span style="color:#00d053">{{ scope.row.sl_payType }}</span>
+              </span>
+              <span v-if="scope.row.sl_payType==='支付宝'">
+                <span style="color:#4db3ff">{{ scope.row.sl_payType }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_delivery" label="是否发货" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_delivery==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_delivery }}</span>
+              </span>
+              <span v-if="scope.row.sl_delivery==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_delivery }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          
+          <el-table-column prop="date" label="下单时间">
+            <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
+          </el-table-column>
+
+
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
+              </el-button>
+              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="待确认收货" name="receive">
+        <el-table :data="items">
+          <el-table-column type="index" label="#" width="60">
+          </el-table-column>
+          <el-table-column prop="_id" label="订单编号" width="150">
+          </el-table-column>
+          <el-table-column prop="sl_name" label="商品名称" width="100">
+          </el-table-column>
+          <el-table-column prop="sl_number" label="数量" width="100">
+          </el-table-column>
+          <el-table-column prop="sl_unit" label="单位" width="100">
+          </el-table-column>
+          <el-table-column prop="ty_price" label="单价" width="100">
+            <template slot-scope="scope">
+              <span style="color:#4db3ff">{{ scope.row.ty_price }}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_totalPrice" label="总额" width="100">
+            <template slot-scope="scope">
+              <span style="color:#00d053">{{ scope.row.sl_totalPrice }}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_payType" label="付款方式" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_payType==='微信支付'">
+                <span style="color:#00d053">{{ scope.row.sl_payType }}</span>
+              </span>
+              <span v-if="scope.row.sl_payType==='支付宝'">
+                <span style="color:#4db3ff">{{ scope.row.sl_payType }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_delivery" label="是否发货" width="100">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_delivery==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_delivery }}</span>
+              </span>
+              <span v-if="scope.row.sl_delivery==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_delivery }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="sl_receive" label="待确认收货" width="110">
+            <template slot-scope="scope">
+              <span v-if="scope.row.sl_receive==='是'">
+                <span style="color:#4db3ff">{{ scope.row.sl_receive }}</span>
+              </span>
+              <span v-if="scope.row.sl_receive==='否'">
+                <span style="color:#f56767">{{ scope.row.sl_receive }}</span>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="date" label="下单时间">
+            <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
+          </el-table-column>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
 
@@ -167,7 +313,7 @@
         <el-form-item label="是否发货" label-width="100px">
           <el-input v-model="form.sl_delivery" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="是否确认收货" label-width="100px">
+        <el-form-item label="待确认收货" label-width="100px">
           <el-input v-model="form.sl_receive" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -202,6 +348,7 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
+        activeName: 'order',
         queryData: [],
         allitems: [],
         items: [],
@@ -219,7 +366,7 @@
             type: 'warning',
             message: '请选择时间区间'
           })
-           this.fetch()
+          this.fetch()
           return
         }
         const sTime = this.query.startTime.getTime()
@@ -238,15 +385,27 @@
 
 
       //待支付
-      // async searchPay() {
-      //   if (this.form.sl_payment === '是') {
+      searchOrder(tab) {
 
-      //     const res = await this.$http.get('rest/sale')
-      //     this.items1 = res.data
-      //     this.setPaginations()
-      //   }
+        this.allitems = this.queryData.filter(item => {
 
-      // },
+          if (tab.name == 'order') {
+            this.fetch()
+            return
+          } else
+          if (tab.name === 'pay') {
+            return item.sl_payment === '否'
+          } else
+          if (tab.name === 'delivery') {
+            return item.sl_delivery === '否'
+          } else
+          if (tab.name === 'receive') {
+            return item.sl_receive === '否'
+          }
+
+        })
+        this.setPaginations()
+      },
 
 
       //修改

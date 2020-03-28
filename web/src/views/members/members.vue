@@ -18,7 +18,7 @@
     </el-row>
 
     <el-table :data="items">
-      <el-table-column type="index" label="ID" width="60">
+      <el-table-column type="index" label="#" width="60">
       </el-table-column>
       <el-table-column prop="mb_name" label="姓名" width="80">
       </el-table-column>

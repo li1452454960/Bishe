@@ -21,7 +21,7 @@
     </el-row>
 
     <el-table :data="items">
-      <el-table-column type="index" label="序号" width="60">
+      <el-table-column type="index" label="#" width="60">
       </el-table-column>
       <el-table-column prop="_id" label="编号" width="150" >
       </el-table-column>
