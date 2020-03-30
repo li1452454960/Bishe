@@ -15,19 +15,21 @@
       <el-tabs v-model="active" tab-position="left"  style="height: 100%px;">
         <el-tab-pane label="基本信息" name="1">
           <el-form-item label="玩具分类" label-width="100px">
-            <el-select v-model="model.parent">
-              <el-option v-for="item in parents" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
+            <el-select v-model="model.child">
+              <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="玩具名称" label-width="100px">
-            <el-input v-model="model.ty_name" autocomplete="off" ></el-input>
+           <el-form-item label="玩具名称" label-width="100px">
+            <el-select v-model="model.parent">
+              <el-option v-for="item in parents" :key="item._id" :label="item.st_name" :value="item._id"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="单价" label-width="100px">
             <el-input v-model="model.ty_price" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="库存" label-width="100px">
+       <!--   <el-form-item label="库存" label-width="100px">
             <el-input v-model="model.ty_number" autocomplete="off"></el-input>
-          </el-form-item>
+          </el-form-item>-->
 
         </el-tab-pane>
 
@@ -120,8 +122,11 @@ import { VueEditor } from "vue2-editor";
     data() {
       return {
         active: '1',
+        child: [],
+        children: [],
         parents: [],
         parent: [],
+        
         model: {
           pictures: [],
           
@@ -173,12 +178,16 @@ import { VueEditor } from "vue2-editor";
 
       //玩具分类
       async getParents() {
-        const res = await this.$http.get('rest/toyType')
+        const res = await this.$http.get('rest/stock')
         this.parents = res.data
         //console.log(res)
       },
-
-
+      
+      async getChildren() {
+        const res = await this.$http.get('rest/toyType')
+        this.children = res.data
+        //console.log(res)
+      },
 
       async save() {
 
@@ -203,7 +212,8 @@ import { VueEditor } from "vue2-editor";
 
     created() {
       this.id && this.fetch()
-      this.getParents();
+      this.getParents()
+      this.getChildren()
     }
   }
 </script>

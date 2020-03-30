@@ -13,7 +13,7 @@
                     <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
                 </el-input>
                 
-                <el-button @click="$router.push('/usersCreate')" type="success">添加用户</el-button>
+                <el-button v-if="power.ust_name =='管理员'"  @click="$router.push('/usersCreate')" type="success">添加用户</el-button>
             </el-col>
         </el-row>
 
@@ -147,6 +147,11 @@
                 });
             }
         },
+        computed:{
+        power(){
+            return this.$AdminUserList.parent.ust_name
+        }
+    },
         created() {
             this.fetch();
 

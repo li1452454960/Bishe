@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Login from '../views/login/login.vue'
 import Home from '../views/home/home.vue'
 import Welcome from '../views/welcome.vue'
-// import Users from '../views/users/users.vue'
 import MembersPoint from '../views/members/membersPoint.vue'
 import Members from '../views/members/members.vue'
 import Toys from '../views/toys/toys.vue'
@@ -15,7 +14,13 @@ import AdminUserList from '../views/users/AdminUserList.vue'
 import Sales from '../views/orders/sales.vue'
 import Stocks from '../views/orders/stocks.vue'
 
+//解决添加相同相同的路由报错
 Vue.use(Router)
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
+
 
 const router = new Router({
   routes: [

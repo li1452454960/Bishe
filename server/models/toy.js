@@ -8,8 +8,8 @@ const schema = new mongoose.Schema({
         ty_icon: {type: String },
         
     }],
-    
-    parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'toyType'},
+    child: {type: mongoose.SchemaTypes.ObjectId,ref: 'toyType'},
+    parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'stock'},
     ty_price: {type: Number },
     ty_number: {type: Number},
     date: {type:Date,default:Date.now},

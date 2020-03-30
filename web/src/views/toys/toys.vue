@@ -25,19 +25,19 @@
       </el-table-column>
       <el-table-column prop="_id" label="编号" width="150" >
       </el-table-column>
-      <el-table-column prop="ty_name" label="玩具名称" width="100">
+      <el-table-column prop="child.tyt_name" label="玩具分类" width="100">
       </el-table-column>
-      <el-table-column prop="parent.tyt_name" label="玩具分类" width="100">
+      <el-table-column prop="parent.st_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="ty_price" label="单价" width="100">
       <template slot-scope="scope">
         <span style="color:#4db3ff">{{ scope.row.ty_price }}元</span>
         </template>
       </el-table-column>
-      <el-table-column prop="ty_number" label="库存" width="100">
+      <el-table-column prop="parent.st_stock" label="库存" width="150">
       </el-table-column>
-
-
+      <el-table-column prop="parent.st_unit" label="单位" width="150">
+      </el-table-column>
       <el-table-column prop="date" label="创建时间">
        <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
@@ -80,7 +80,7 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
-        parents: [],
+        child: [],
         parent: [],
         queryData: [],
         allitems: [],

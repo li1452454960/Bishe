@@ -13,11 +13,15 @@ module.exports = app => {
       res.send(model)
 
     })
+
+      
 //编辑接口
     router.put('/:id', async (req, res) => {
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
     res.send(model)
   })
+ 
+
   router.put('/:id/state/:state', async (req, res, next) => {
     state = 0
 		if(req.params.state && req.params.state == "true") state = 1
@@ -31,8 +35,8 @@ module.exports = app => {
     router.get('/',  async (req,res) =>{
      
       const queryOptions = {}
-      if (req.Model.modelName === 'toy' || 'AdminUser') {
-        queryOptions.populate = 'parent'
+      if (req.Model.modelName === 'toy' || 'AdminUser' || 'stock') {
+        queryOptions.populate = 'parent' || 'child '
       }
       const items =  await req.Model.find({}).setOptions(queryOptions)
       res.send(items)
@@ -67,6 +71,7 @@ module.exports = app => {
       res.send(file)
 
     })
+  
 
 //登录接口
 app.post('/web/api/login', async (req,res) => {
