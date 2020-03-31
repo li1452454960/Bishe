@@ -21,16 +21,6 @@ module.exports = app => {
     res.send(model)
   })
  
-
-  router.put('/:id/state/:state', async (req, res, next) => {
-    state = 0
-		if(req.params.state && req.params.state == "true") state = 1
-    const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
-    res.send(model)
-		// 	if(err) return res.sendResult(null,400,err)
-		// 	res.sendResult(manager,200,"设置状态成功")
-		// (req,res,next)
-  })
 //获取列表接口
     router.get('/',  async (req,res) =>{
      
@@ -87,7 +77,7 @@ app.post('/web/api/login', async (req,res) => {
   const isValid = require('bcryptjs').compareSync(password,user.password)
   assert(isValid, 422, '密码错误')
   //返回token
-  const token = jwt.sign({ id: user._id}, app.get('secret'))
+  const token = jwt.sign({ id: user._id}, app.get('secret'),{ expiresIn:3600 })
   res.send({token})
 })
 
