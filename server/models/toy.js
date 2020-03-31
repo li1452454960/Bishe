@@ -2,16 +2,14 @@ const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
     ty_id: {type: String },//编号
-    ty_name: {type: String },
     pictures:[{
         ty_position: {type: String },
         ty_icon: {type: String },
         
     }],
-    child: {type: mongoose.SchemaTypes.ObjectId,ref: 'toyType'},
-    parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'stock'},
-    ty_price: {type: Number },
-    ty_number: {type: Number},
+    child: {type: mongoose.SchemaTypes.ObjectId,ref: 'toyType',required:true},
+    parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'stock' ,required:true},
+    ty_price: {type: Number ,required:true},
     date: {type:Date,default:Date.now},
 
     ty_brand: {type: String },//品牌

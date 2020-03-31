@@ -16,7 +16,7 @@
         <template>
           <el-button type="info" @click="searchUser" icon="el-icon-search"></el-button>
         </template>
-        <el-button @click="$router.push('/toysCreate')" type="success">上架玩具</el-button>
+        <el-button v-if="user.identity == '管理员'" @click="$router.push('/toysCreate')" type="success">上架玩具</el-button>
       </el-col>
     </el-row>
 
@@ -42,7 +42,7 @@
        <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column v-if="user.identity == '管理员'" label="操作">
         <template slot-scope="scope">
           <el-button size="mini" plain type="primary" icon="el-icon-edit" circle
             @click="$router.push(`/toysEdit/${scope.row._id}`)">
@@ -90,6 +90,11 @@
 
       }
 
+    },
+    computed:{
+        user(){
+            return this.$store.getters.user
+        }
     },
     created() {
 

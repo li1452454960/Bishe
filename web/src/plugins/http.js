@@ -41,11 +41,16 @@ http.interceptors.response.use(res => {
 }, err => {
      endLoading()
    if (err.response.data.message)  {
-     Vue.prototype.$message({
-          type: 'error',
-          message: err.response.data.message
-     })  
-     
+     // Vue.prototype.$message({
+     //      type: 'error',
+     //      message: err.response.data.message
+     // })  
+     if (err.response.status === 500) {
+          Vue.prototype.$message({
+               type: 'error',
+               message: '请填写正确信息'
+          })  
+        }  
     if (err.response.status === 401) {
      router.push('/login')
    } 

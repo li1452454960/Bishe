@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  username: { type: String },
+  username: { type: String ,required:true},
   password: {
     type: String,
     select: false,
     set(val) {
       return require('bcryptjs').hashSync(val, 10)
     }
+    ,required:true
   },
   icon: { type: String },
   identity: { type: String ,required:true },
-  parent: {type: mongoose.SchemaTypes.ObjectId,ref: 'userType'},
   date: {type:Date,default:Date.now},
 
 })

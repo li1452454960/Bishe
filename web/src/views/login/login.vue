@@ -19,6 +19,9 @@
 </template>
 
 <script>
+
+import jwt_decode from 'jwt-decode';
+
   export default {
    data() {
        return {
@@ -35,7 +38,14 @@
        const res = await this.$http.post('login',this.model)
        // console.log(res.data)
       //保存登录用户返回token值
+      const { token } = res.data;
       localStorage.token = res.data.token
+      //解析token
+      const decode = jwt_decode(token)
+      //token存储到VueX中
+      this.$store.dispatch("setAuthenticated",!this.isEmpty(decode))
+      this.$store.dispatch("setUser",decode)
+
       this.$router.push('/welcome')
       this.$message({
         type: 'success',
@@ -43,7 +53,15 @@
       })           
           
         
-      }
+      },
+      isEmpty(value){
+            return (
+                value === undefined ||
+                value === null ||
+                (typeof value === 'object' && Object.keys(value).length===0) ||
+                (typeof value === 'string' && value.trim().length===0)
+            );
+        },
  
    }
   }

@@ -8,7 +8,6 @@ import Members from '../views/members/members.vue'
 import Toys from '../views/toys/toys.vue'
 import ToysType from '../views/toys/toysType.vue'
 import ToysEdit from '../views/toys/toysEdit.vue'
-import UsersType from '../views/users/usersType.vue'
 import AdminUserEdit from '../views/users/AdminUserEdit.vue'
 import AdminUserList from '../views/users/AdminUserList.vue'
 import Sales from '../views/orders/sales.vue'
@@ -50,8 +49,6 @@ const router = new Router({
       {path: '/usersCreate', component: AdminUserEdit },
       {path: '/usersEdit/:id', component: AdminUserEdit, props: true },
       {path: '/usersList', component: AdminUserList },
-      
-      {path: '/usersType',component:  UsersType },
 
       {path: '/sales',component:  Sales } ,
 

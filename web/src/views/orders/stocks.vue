@@ -48,16 +48,16 @@
 
     <el-dialog :visible.sync="dialogFormVisibleAdd">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
-      <el-form :model="form">
+      <el-form :model="form" :rules="rules">
     <!--   <el-form-item label="玩具分类" prop="parent " label-width="100px">
            <el-select v-model="form.parent">
           <el-option v-for="item in parents" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
         </el-select>
           </el-form-item>-->
-        <el-form-item label="玩具名称" label-width="100px">
+        <el-form-item label="玩具名称"  prop="st_name" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="单位" label-width="100px">
+        <el-form-item label="单位" prop="st_unit" label-width="100px">
           <el-select v-model="form.st_unit">
             <el-option label="件" value="件"></el-option>
             <el-option label="箱" value="箱"></el-option>
@@ -67,7 +67,7 @@
             <el-option label="只" value="只"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="数量" label-width="100px">
+        <el-form-item label="数量" prop="st_stock" label-width="100px">
           <el-input v-model="form.st_stock" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -129,19 +129,17 @@
         dialogFormVisibleAdd: false,
         dialogFormVisibleAddStock: false,
         form: {},
+        rules:{
+          st_name:{required:true,message: '请输入玩具名称',trigger: 'blur'},
+          st_unit:{required:true},
+          st_stock:{required:true,message: '请输入入库玩具数量',trigger: 'blur'},
+        },
         
       }
 
     },
     
     methods: {
-
-       //玩具分类
-      // async getParents() {
-      //   const res = await this.$http.get('rest/toyType')
-      //   this.parents = res.data
-      //   //console.log(res)
-      // },
 
       //修改
       editToysDia(row) {
@@ -150,21 +148,21 @@
         this.dialogFormVisibleAdd = true
       },
 
-      async add() {
+      // async add() {
 
-        this.dialogFormVisibleAddStock = false
-        // let stock = this.form.st_number + this.form.st_stock
+      //   this.dialogFormVisibleAddStock = false
+      //   // let stock = this.form.st_number + this.form.st_stock
         
-        await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
+      //   await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
       
-        this.$router.push('/stocks')
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        });
-        this.fetch()
+      //   this.$router.push('/stocks')
+      //   this.$message({
+      //     type: 'success',
+      //     message: '保存成功'
+      //   });
+      //   this.fetch()
 
-      },
+      // },
 
       //添加
       showAddToysDia() {

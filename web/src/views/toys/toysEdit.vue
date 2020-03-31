@@ -14,17 +14,17 @@
 
       <el-tabs v-model="active" tab-position="left"  style="height: 100%px;">
         <el-tab-pane label="基本信息" name="1">
-          <el-form-item label="玩具分类" label-width="100px">
+          <el-form-item  label="玩具分类" prop="child" label-width="100px">
             <el-select v-model="model.child">
               <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
             </el-select>
           </el-form-item>
-           <el-form-item label="玩具名称" label-width="100px">
+           <el-form-item label="玩具名称" prop="parent" label-width="100px">
             <el-select v-model="model.parent">
               <el-option v-for="item in parents" :key="item._id" :label="item.st_name" :value="item._id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="单价" label-width="100px">
+          <el-form-item label="单价" prop="ty_price" label-width="100px">
             <el-input v-model="model.ty_price" autocomplete="off"></el-input>
           </el-form-item>
        <!--   <el-form-item label="库存" label-width="100px">
@@ -131,35 +131,10 @@ import { VueEditor } from "vue2-editor";
           pictures: [],
           
         },
-        rules: {
-          username: [{
-              required: true,
-              message: '请输入用户名',
-              trigger: 'blur'
-            },
-            {
-              min: 2,
-              max: 16,
-              message: '长度在2-16个字符之间',
-              trigger: 'blur'
-            }
-          ],
-          password: [{
-              required: true,
-              message: '请输入密码',
-              trigger: 'blur'
-            },
-            {
-              min: 6,
-              max: 16,
-              message: '长度在6-16之间',
-              trigger: 'blur'
-            }
-          ],
-          parent: [{
-            required: true,
-            trigger: 'blur'
-          }, ],
+        rules:{
+          child:{required:true},
+          parent:{required:true},
+          ty_price:{required:true,message: '请输上架玩具单价',trigger: 'blur'},
         },
         options: [{label: '无保质期'}, {label: '三个月'}, {label: '半年'}, {label: '一年'}, {label: '三年' },{label: '永久质保' }],
         options1: [{label: '0-12个月'}, {label: '0-36个月'}, {label: '3岁-八岁'}, {label: '8岁-14岁'}, {label: '14岁以上' }],

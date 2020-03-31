@@ -13,7 +13,7 @@
                     <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
                 </el-input>
                 
-                <el-button   @click="$router.push('/usersCreate')" type="success">添加用户</el-button>
+                <el-button v-if="user.identity == '管理员'"  @click="$router.push('/usersCreate')" type="success">添加用户</el-button>
             </el-col>
         </el-row>
 
@@ -26,14 +26,11 @@
                 </template>
             </el-table-column>
             <el-table-column prop="username" label="用户名"></el-table-column>
-
-
-            <el-table-column prop="parent.ust_name" label="用户类型" width="100">
-            </el-table-column>
+            <el-table-column prop="identity" label="用户类型"></el-table-column>
             <el-table-column prop="date" label="创建时间">
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
+            <el-table-column v-if="user.identity == '管理员'" fixed="right" label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button size="mini" plain type="primary" icon="el-icon-edit" circle
                         @click="$router.push(`/usersEdit/${scope.row._id}`)"></el-button>
@@ -147,7 +144,11 @@
                 });
             }
         },
-      
+      computed:{
+        user(){
+            return this.$store.getters.user
+        }
+    },
         created() {
             this.fetch();
 

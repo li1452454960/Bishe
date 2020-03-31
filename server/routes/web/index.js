@@ -25,7 +25,7 @@ module.exports = app => {
     router.get('/',  async (req,res) =>{
      
       const queryOptions = {}
-      if (req.Model.modelName === 'toy' || 'AdminUser' || 'stock') {
+      if (req.Model.modelName === 'toy' || 'stock') {
         queryOptions.populate = 'parent' || 'child '
       }
       const items =  await req.Model.find({}).setOptions(queryOptions)
@@ -77,7 +77,13 @@ app.post('/web/api/login', async (req,res) => {
   const isValid = require('bcryptjs').compareSync(password,user.password)
   assert(isValid, 422, '密码错误')
   //返回token
-  const token = jwt.sign({ id: user._id}, app.get('secret'),{ expiresIn:3600 })
+  const rule = {
+    id:user.id,
+    name:user.username,
+    icon:user.icon,
+    identity:user.identity
+}
+  const token = jwt.sign(rule, app.get('secret'),{ expiresIn:3600 })
   res.send({token})
 })
 
