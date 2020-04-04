@@ -23,10 +23,10 @@
     <el-table :data="items">
       <el-table-column type="index" label="#" width="60">
       </el-table-column>
-      <el-table-column prop="_id" label="编号" width="150" >
+      <el-table-column prop="parent.st_id" label="玩具编号" width="150" >
       </el-table-column>
-      <el-table-column prop="child.tyt_name" label="玩具分类" width="100">
-      </el-table-column>
+     <!-- <el-table-column prop="child.tyt_name" label="玩具分类" width="100">
+      </el-table-column>-->
       <el-table-column prop="parent.st_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="ty_price" label="单价" width="100">

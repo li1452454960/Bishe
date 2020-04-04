@@ -8,16 +8,16 @@
 
     <el-row class="searchRow">
       <el-form :inline="true" ref="add_data" :model='query'>
-        <el-form-item label="按照时间筛选:">
-          <el-date-picker @input="loadUserList()" v-model="query.startTime" type="datetime" placeholder="选择开始时间">
+        <el-form-item >
+         按照时间筛选: <el-date-picker @input="loadUserList()" v-model="query.startTime" type="datetime" placeholder="选择开始时间">
           </el-date-picker>
           --
           <el-date-picker @input="loadUserList()" v-model="query.endTime" type="datetime" placeholder="选择结束时间">
           </el-date-picker>
         </el-form-item>
-
+        订单编号: <el-input @input="loadUserList()" clearable placeholder="请输入订单编号" v-model="query.sl_id" class="inputSearch"></el-input>
         <template>
-          <el-button type="info" @click="searchUser" icon="el-icon-search"></el-button>
+          <el-button type="info" @click="searchUser" icon="el-icon-search" ></el-button>
         </template>
         <el-button @click="showAddToysDia()" type="success" style="float: right;">添加分类</el-button>
       </el-form>
@@ -28,7 +28,7 @@
         <el-table :data="items">
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
-          <el-table-column prop="_id" label="订单编号" width="150">
+          <el-table-column prop="sl_id" label="订单编号" width="150">
           </el-table-column>
           <el-table-column prop="sl_name" label="商品名称" width="100">
           </el-table-column>
@@ -107,7 +107,7 @@
         <el-table :data="items">
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
-          <el-table-column prop="_id" label="订单编号" width="150">
+          <el-table-column prop="sl_id" label="订单编号" width="150">
           </el-table-column>
           <el-table-column prop="sl_name" label="商品名称" width="100">
           </el-table-column>
@@ -161,7 +161,7 @@
         <el-table :data="items">
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
-          <el-table-column prop="_id" label="订单编号" width="150">
+          <el-table-column prop="sl_id" label="订单编号" width="150">
           </el-table-column>
           <el-table-column prop="sl_name" label="商品名称" width="100">
           </el-table-column>
@@ -222,7 +222,7 @@
         <el-table :data="items">
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
-          <el-table-column prop="_id" label="订单编号" width="150">
+          <el-table-column prop="sl_id" label="订单编号" width="150">
           </el-table-column>
           <el-table-column prop="sl_name" label="商品名称" width="100">
           </el-table-column>
@@ -285,6 +285,9 @@
     <el-dialog :visible.sync="dialogFormVisibleAdd">
       <h2>{{form._id ? '编辑' : '添加'}}玩具分类</h2>
       <el-form :model="form">
+      <el-form-item label="订单编号" label-width="100px">
+          <el-input v-model="form.sl_id"  autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="商品名称" label-width="100px">
           <el-input v-model="form.sl_name" autocomplete="off"></el-input>
         </el-form-item>
@@ -330,18 +333,23 @@
 </template>
 
 <script>
+ import {
+    getDateNums
+  } from "@/plugins/utils.js"
+
   export default {
     data() {
       return {
         query: {
           startTime: '',
-          endTime: ''
+          endTime: '',
+          sl_id: ''
         },
         paginations: {
           page_index: 1, //当前位于多少页
           total: 0, //总数
-          page_size: 5, //一页显示多少条
-          page_sizes: [5, 10, 15], //每页显示多少条
+          page_size: 10, //一页显示多少条
+          page_sizes: [5, 10, 20], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
         activeName: 'order',
@@ -354,23 +362,43 @@
 
     },
     methods: {
+       //自增编号
+      order_nums() {
+        var outTradeNo = ""; //订单号
+        for (var i = 0; i < 6; i++) //6位随机数，用以加在时间戳后面。
+        {
+          outTradeNo += Math.floor(Math.random() * 10);
+        }
+
+        outTradeNo = String(getDateNums(new Date())) + String(outTradeNo)
+        this.outTradeNo = outTradeNo;
+      },
+
 
       //按时间搜索
       searchUser() {
-        if (!this.query.startTime || !this.query.endTime) {
+        if (!this.query.startTime && !this.query.endTime && !this.query.sl_id) {
           this.$message({
             type: 'warning',
-            message: '请选择时间区间'
+            message: '请填写搜索条件'
           })
           this.fetch()
           return
         }
-        const sTime = this.query.startTime.getTime()
-        const eTime = this.query.endTime.getTime()
+        // const sTime = this.query.startTime.getTime()
+        // const eTime = this.query.endTime.getTime()
         this.allitems = this.queryData.filter(item => {
           let date = new Date(item.date)
           let time = date.getTime()
-          return time >= sTime && time <= eTime
+          let slId = item.sl_id
+          if (!this.query.sl_id =='') {
+            return this.query.sl_id == slId
+          } else
+           if (this.query.startTime.getTime() && this.query.endTime.getTime()) 
+          {
+            return time >= this.query.startTime.getTime() && time <= this.query.endTime.getTime()
+          }
+          
         })
         this.setPaginations()
       },
@@ -413,7 +441,9 @@
 
       //添加
       showAddToysDia() {
+        this.order_nums() 
         this.form = {}
+        this.form.sl_id = this.outTradeNo
         this.dialogFormVisibleAdd = true
       },
 
@@ -444,7 +474,7 @@
       setPaginations() {
         this.paginations.total = this.allitems.length
         this.paginations.page_index = 1
-        this.paginations.page_size = 5
+        this.paginations.page_size = 10
         //设置默认分页数据
         this.items = this.allitems.filter((item, index) => {
           return index < this.paginations.page_size

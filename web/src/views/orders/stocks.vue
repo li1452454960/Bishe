@@ -8,7 +8,7 @@
 
     <el-row class="searchRow">
       <el-col>
-        
+
         <el-button @click="showAddToysDia()" type="success">玩具入库</el-button>
       </el-col>
     </el-row>
@@ -16,29 +16,31 @@
     <el-table :data="items">
       <el-table-column type="index" label="#" width="60">
       </el-table-column>
+      <el-table-column prop="st_id" label="玩具编号" width="150">
+      </el-table-column>
       <el-table-column prop="st_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="st_unit" label="单位" width="100">
       </el-table-column>
 
       <el-table-column prop="st_stock" label="库存">
-       <template slot-scope="scope">
-              <span v-if="scope.row.st_stock <= 20 ">
-                <span style="color:#f56767">{{ scope.row.st_stock }}（库存不足）</span>
-              </span>
-              <span v-if="scope.row.st_stock > 20 ">
-                <span style="color:#00d053">{{ scope.row.st_stock }}</span>
-              </span>
-            </template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.st_stock <= 20 ">
+            <span style="color:#f56767">{{ scope.row.st_stock }}（库存不足）</span>
+          </span>
+          <span v-if="scope.row.st_stock > 20 ">
+            <span style="color:#00d053">{{ scope.row.st_stock }}</span>
+          </span>
+        </template>
       </el-table-column>
-      
+
       <el-table-column prop="date" label="创建时间">
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-        <el-button size="mini" plain type="primary" icon="el-icon-plus" circle @click="editToysDia(scope.row)">
+          <el-button size="mini" plain type="primary" icon="el-icon-plus" circle @click="editToysDia(scope.row)">
           </el-button>
           <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
           </el-button>
@@ -49,12 +51,10 @@
     <el-dialog :visible.sync="dialogFormVisibleAdd">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form" :rules="rules">
-    <!--   <el-form-item label="玩具分类" prop="parent " label-width="100px">
-           <el-select v-model="form.parent">
-          <el-option v-for="item in parents" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
-        </el-select>
-          </el-form-item>-->
-        <el-form-item label="玩具名称"  prop="st_name" label-width="100px">
+         <el-form-item label="玩具编号"  label-width="100px">
+          <el-input v-model="form.st_id" disabled autocomplete="off" ></el-input>
+        </el-form-item>
+        <el-form-item label="玩具名称" prop="st_name" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="单位" prop="st_unit" label-width="100px">
@@ -80,11 +80,12 @@
     <el-dialog :visible.sync="dialogFormVisibleAddStock">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form">
-      <!-- <el-form-item label="玩具分类" prop="parent " label-width="100px">
+        <!-- <el-form-item label="玩具分类" prop="parent " label-width="100px">
             <el-select v-model="form.parent">
           <el-option v-for="item in parents" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
         </el-select>
           </el-form-item>-->
+          
         <el-form-item label="玩具名称" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
         </el-form-item>
@@ -98,48 +99,70 @@
       </div>
     </el-dialog>
 
-    <el-pagination 
-    @size-change="handleSizeChange" 
-    @current-change="handleCurrentChange"
-      :current-page.sync="paginations.page_index" 
-      :page-sizes="paginations.page_sizes"
-      :page-size="paginations.page_size" 
-      :layout="paginations.layout" 
-      :total="paginations.total">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+      :current-page.sync="paginations.page_index" :page-sizes="paginations.page_sizes"
+      :page-size="paginations.page_size" :layout="paginations.layout" :total="paginations.total">
     </el-pagination>
 
   </el-card>
 </template>
 
 <script>
+  import {
+    getDateNums
+  } from "@/plugins/utils.js"
+
   export default {
     data() {
       return {
-         paginations:{
-                page_index:1, //当前位于多少页
-                total:0, //总数
-                page_size:5,  //一页显示多少条
-                page_sizes:[5,10,15], //每页显示多少条
-                layout:'total,sizes,prev,pager,next,jumper' // 翻页属性
-            },
+        paginations: {
+          page_index: 1, //当前位于多少页
+          total: 0, //总数
+          page_size: 5, //一页显示多少条
+          page_sizes: [5, 10, 15], //每页显示多少条
+          layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
+        },
         // parents: [],
         // parent: [],   
-        allitems:[],
+        allitems: [],
         items: [],
         dialogFormVisibleAdd: false,
         dialogFormVisibleAddStock: false,
         form: {},
-        rules:{
-          st_name:{required:true,message: '请输入玩具名称',trigger: 'blur'},
-          st_unit:{required:true},
-          st_stock:{required:true,message: '请输入入库玩具数量',trigger: 'blur'},
+        rules: {
+          st_name: {
+            required: true,
+            message: '请输入玩具名称',
+            trigger: 'blur'
+          },
+          st_unit: {
+            required: true,
+            trigger: 'blur'
+          },
+          st_stock: {
+            required: true,
+            message: '请输入入库玩具数量',
+            trigger: 'blur'
+          },
         },
-        
+
       }
 
     },
-    
+
     methods: {
+      //自增编号
+      order_nums() {
+        var outTradeNo = ""; //订单号
+        for (var i = 0; i < 6; i++) //6位随机数，用以加在时间戳后面。
+        {
+          outTradeNo += Math.floor(Math.random() * 10);
+        }
+
+        outTradeNo = String(getDateNums(new Date())) + String(outTradeNo)
+        this.outTradeNo = outTradeNo;
+      },
+
 
       //修改
       editToysDia(row) {
@@ -152,9 +175,9 @@
 
       //   this.dialogFormVisibleAddStock = false
       //   // let stock = this.form.st_number + this.form.st_stock
-        
+
       //   await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
-      
+
       //   this.$router.push('/stocks')
       //   this.$message({
       //     type: 'success',
@@ -166,17 +189,21 @@
 
       //添加
       showAddToysDia() {
+        this.order_nums() 
         this.form = {}
+        this.form.st_id = this.outTradeNo
         this.dialogFormVisibleAdd = true
       },
       async addToys() {
 
         this.dialogFormVisibleAdd = false
-        if(this.form._id) {
-           await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
-        }else{
-         await this.$http.post('rest/stocks', this.form)
+        if (this.form._id) {
+          await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
+        } else {
+          await this.$http.post('rest/stocks', this.form)
+        
         }
+       
         this.$router.push('/stocks')
         this.$message({
           type: 'success',
@@ -189,42 +216,42 @@
       async fetch() {
         const res = await this.$http.get('rest/stocks')
         this.allitems = res.data
-         this.setPaginations()
+        this.setPaginations()
       },
       //分页
-       setPaginations(){
-            this.paginations.total = this.allitems.length
-            this.paginations.page_index = 1
-            this.paginations.page_size = 5
-            //设置默认分页数据
-            this.items = this.allitems.filter((item,index)=>{
-                return index < this.paginations.page_size
-            })
-        },
-        handleSizeChange(page_size){
-            this.paginations.page_index = 1
-            this.paginations.page_size = page_size
-            this.items = this.allitems.filter((item,index)=>{
-                return index < page_size
-            })
-        },
-        handleCurrentChange(page){
-            //获取当前页
-            let index = this.paginations.page_size * (page-1)
-            //数据总数
-            let nums = this.paginations.page_size * page
-            let tables = []
-            for(let i=index; i<nums; i++){
-                if(this.allitems[i]){
-                    tables.push(this.allitems[i])
-                }
-                this.items = tables
-            }
-        },
+      setPaginations() {
+        this.paginations.total = this.allitems.length
+        this.paginations.page_index = 1
+        this.paginations.page_size = 5
+        //设置默认分页数据
+        this.items = this.allitems.filter((item, index) => {
+          return index < this.paginations.page_size
+        })
+      },
+      handleSizeChange(page_size) {
+        this.paginations.page_index = 1
+        this.paginations.page_size = page_size
+        this.items = this.allitems.filter((item, index) => {
+          return index < page_size
+        })
+      },
+      handleCurrentChange(page) {
+        //获取当前页
+        let index = this.paginations.page_size * (page - 1)
+        //数据总数
+        let nums = this.paginations.page_size * page
+        let tables = []
+        for (let i = index; i < nums; i++) {
+          if (this.allitems[i]) {
+            tables.push(this.allitems[i])
+          }
+          this.items = tables
+        }
+      },
       //删除
       async deleToys(row) {
 
-        this.$confirm(`确定删除 "${row.tyt_name}" 玩具分类吗? `, '提示', {
+        this.$confirm(`确定删除 "${row.st_name}" 玩具吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -249,7 +276,7 @@
       this.fetch()
       // this.getParents();
     },
-   
+
   }
 </script>
 
@@ -265,6 +292,4 @@
   .searchRow {
     margin-top: 20px;
   }
-
-  
 </style>
