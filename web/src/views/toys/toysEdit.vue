@@ -132,8 +132,8 @@ import { VueEditor } from "vue2-editor";
           
         },
         rules:{
-          child:{required:true},
-          parent:{required:true},
+          child:{required:true,trigger: 'blur'},
+          parent:{required:true,trigger: 'blur'},
           ty_price:{required:true,message: '请输上架玩具单价',trigger: 'blur'},
         },
         options: [{label: '无保质期'}, {label: '三个月'}, {label: '半年'}, {label: '一年'}, {label: '三年' },{label: '永久质保' }],

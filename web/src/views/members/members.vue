@@ -62,7 +62,7 @@
         <el-form-item label="用户名" prop="mb_name" label-width="100px">
           <el-input v-model="form.mb_name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="性别" label-width="100px">
+        <el-form-item label="性别" prop="mb_sex" label-width="100px">
           <el-select v-model="form.mb_sex">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
@@ -114,6 +114,13 @@
               message: '长度在2-16个字符之间',
               trigger: 'blur'
             }
+          ],
+          mb_sex: [{
+              required: true,
+              message: '性别不能为空',
+              trigger: 'blur'
+            },
+           
           ],
           mb_email: [{
               type: 'email',

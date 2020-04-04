@@ -131,15 +131,16 @@ computed:{
               name: 'login'
             })
         },
-        //获取列表
-      async fetch() {
-        const res = await this.$http.get('rest/stocks')
-        this.allitems = res.data
-      },
+    //     //获取列表
+    //   async fetch() {
+    //     const res = await this.$http.get('rest/stocks')
+    //     this.allitems = res.data
+    //   },
+    //    created() {
+    //   this.fetch()
+    // },
     },
-    created() {
-      this.fetch()
-    },
+   
 
   }
 </script>

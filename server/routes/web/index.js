@@ -11,7 +11,7 @@ module.exports = app => {
     router.post('/', async (req, res) => {
       const model =  await req.Model.create(req.body)
       res.send(model)
-
+ 
     })
 
       

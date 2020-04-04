@@ -97,7 +97,7 @@
         }
     },
     created() {
-
+      this.fetchStock();
       this.fetch();
      
     },
@@ -137,6 +137,11 @@
           this.fetch();
       },
 
+      // 获取列表
+      async fetchStock() {
+        const res = await this.$http.get('rest/stocks')
+        this.allitems = res.data
+      },
       //获取会员列表
       async fetch() {
         const res = await this.$http.get('rest/toys')

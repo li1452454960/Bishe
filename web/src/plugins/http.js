@@ -47,7 +47,7 @@ http.interceptors.response.use(res => {
      // })  
      if (err.response.status === 500) {
           Vue.prototype.$message({
-               type: 'error',
+               type: 'warning',
                message: '请填写正确信息'
           })  
         }  
