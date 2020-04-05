@@ -391,12 +391,17 @@
           let date = new Date(item.date)
           let time = date.getTime()
           let slId = item.sl_id
-          if (!this.query.sl_id =='') {
+          if (this.query.sl_id) {
             return this.query.sl_id == slId
           } else
            if (this.query.startTime.getTime() && this.query.endTime.getTime()) 
           {
             return time >= this.query.startTime.getTime() && time <= this.query.endTime.getTime()
+          }
+          else
+           if (this.query.startTime.getTime() && this.query.endTime.getTime() && this.query.sl_id ) 
+          {
+            return time >= this.query.startTime.getTime() && time <= this.query.endTime.getTime() && this.query.sl_id == slId
           }
           
         })

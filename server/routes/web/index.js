@@ -25,7 +25,7 @@ module.exports = app => {
     router.get('/',  async (req,res) =>{
      
       const queryOptions = {}
-      if (req.Model.modelName === 'toy' || 'stock') {
+      if (req.Model.modelName === 'toy' || 'stock' || 'score') {
         queryOptions.populate = 'parent' || 'child '
       }
       const items =  await req.Model.find({}).setOptions(queryOptions)
@@ -50,6 +50,7 @@ module.exports = app => {
  // 登录校验中间件
  const authMiddleware = require('../../middleware/auth')
  const resourceMiddleware = require('../../middleware/resource')
+ 
 //通用CRUD接口
     app.use('/web/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
 //上传图片

@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column prop="parent.st_unit" label="单位" width="150">
       </el-table-column>
-      <el-table-column prop="date" label="创建时间">
+      <el-table-column prop="date" label="上架时间">
        <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
