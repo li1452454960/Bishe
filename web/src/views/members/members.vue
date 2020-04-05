@@ -37,7 +37,7 @@
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
-      <el-table-column label="用户状态">
+      <el-table-column prop="mb_state" label="用户状态" >
         <template slot-scope="scope">
           <el-switch @change="changeState(scope.row)" v-model="scope.row.mb_state" active-color="#13ce66"
             inactive-color="#ff4949">
@@ -167,11 +167,11 @@
 
 
       //修改用户状态
-      // async changeState(member) {
+      async changeState(member) {
 
-      //   await this.$http.put(`rest/members/${member._id}/state/${member.mb_state} `)
+        await this.$http.put(`rest/members/${member._id}/${member.mb_state} `)
 
-      // },
+      },
       //搜索用户
       searchUser() {
         if (this.query.mb_name === '' && this.query.mb_age === '') {

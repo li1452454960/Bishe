@@ -69,20 +69,29 @@ import jwt_decode from 'jwt-decode';
 
 </script>
 
-<style>
+<style scoped>
+    
     .login-warp{
         height: 100vh;
-        background-color: #324152;
+        background: url(../../assets/login.jpg) no-repeat;
+        background-size: 100% 100%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        
     }
     .login-warp .login-form {
         width: 400px;
-        background-color: #fff;
+        background-color: #e8f5fc90;
+        margin-top: 150px;
+        margin-left: 1000px;
         border-radius: 5px;
         padding: 30px;
+        
     }
+    h2{
+      text-align: center;
+    }
+    
     .login-warp .login-btn {
         width: 100%;
     }

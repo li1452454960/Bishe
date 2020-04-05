@@ -4,11 +4,12 @@
       <el-row>
         <el-col :span="4">
           <div class="grid-content bg-purple">
-            <img src="../../assets/logo.png" width="179px" height="60px" alt="无法显示图片">
+            <img src="../../assets/logo.jpg" width="150px" height="60px" alt="无法显示图片">
           </div>
+          
         </el-col>
         <el-col :span="14" class="middle">
-          <h3>玩具店会员管理系统</h3>
+          <img src="../../assets/icon.jpg" alt="无法显示图片">
         </el-col>
         <el-col :span="6"  class="user">
         <div class="userinfo">
@@ -27,11 +28,6 @@
                         </el-dropdown>
                     </span>
                 </div>
-         <!-- <div class="grid-content bg-purple">
-            <a href="#" @click.prevent="handleSignout()" class="loginout" type="danger">
-              <h4>退出</h4>
-            </a>
-          </div>-->
         </el-col>
       </el-row>
     </el-header>
@@ -151,11 +147,11 @@ computed:{
   }
 
   .header {
-    background-color: #b3c0d1;
+    background-color: #ced6e0;
   }
 
   .aside {
-    background-color: #d3dce6;
+    background-color: #dfe4ea;
   }
 
   .main {

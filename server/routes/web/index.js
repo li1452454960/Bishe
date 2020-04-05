@@ -20,6 +20,18 @@ module.exports = app => {
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
     res.send(model)
   })
+  //编辑接口
+  router.put('/:id/:state', async (req, res) => {
+    
+   	if(req.params.state == 'true'){
+      req.body.mb_state = true
+     } else{
+      req.body.mb_state = false
+     }
+    
+    const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
+    res.send(model)
+  })
  
 //获取列表接口
     router.get('/',  async (req,res) =>{

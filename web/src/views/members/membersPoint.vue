@@ -25,12 +25,12 @@
       </el-table-column>
       <el-table-column prop="sc_receive" label="领取积分" width="100">
       <template slot-scope="scope">
-              <span style="color:#00d053">{{ scope.row.sc_receive }}</span>
+              <span style="color:#00d053">+{{ scope.row.sc_receive }}</span>
             </template>
       </el-table-column>
       <el-table-column prop="sc_exchange" label="兑换积分">
         <template slot-scope="scope">
-              <span style="color:#f56767">{{ scope.row.sc_receive }}</span>
+              <span style="color:#f56767">-{{ scope.row.sc_receive }}</span>
             </template>
       </el-table-column>
 

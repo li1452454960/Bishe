@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     mb_hobby: {type: String },
     mb_mobile: {type: String ,required:true},
     mb_email: {type: String ,required:true},
-    mb_state: {type: Number },
+    mb_state: {type: Boolean  },
     date: {type:Date,default:Date.now}  ,
     
 

@@ -157,6 +157,10 @@
 </script>
 
 <style scoped>
+.body {
+      background: url(../../assets/login.jpg) no-repeat;
+      background-size: 100% 100%;
+    }
     .box-card {
         height: 100%;
     }
