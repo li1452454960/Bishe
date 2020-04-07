@@ -37,9 +37,9 @@
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
-      <el-table-column prop="mb_state" label="用户状态" >
+      <el-table-column prop="state" label="用户状态" >
         <template slot-scope="scope">
-          <el-switch @change="changeState(scope.row)" v-model="scope.row.mb_state" active-color="#13ce66"
+          <el-switch @change="changeState(scope.row)" v-model="scope.row.state" active-color="#13ce66"
             inactive-color="#ff4949">
           </el-switch>
         </template>
@@ -60,7 +60,7 @@
       <h2>{{form._id ? '编辑' : '添加'}}会员</h2>
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="用户名" prop="mb_name" label-width="100px">
-          <el-input v-model="form.mb_name" autocomplete="off"></el-input>
+          <el-input v-model="form.mb_name" autocomplete="off" autofocus="true" ></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="mb_sex" label-width="100px">
           <el-select v-model="form.mb_sex">
@@ -73,10 +73,10 @@
           <el-input v-model="form.mb_age" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="兴趣爱好" prop="mb_hobby" label-width="100px">
-          <el-input v-model="form.mb_hobby" autocomplete="off"></el-input>
+          <el-input  v-model="form.mb_hobby" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="mb_email" label-width="100px">
-          <el-input v-model="form.mb_email" autocomplete="off"></el-input>
+          <el-input  v-model="form.mb_email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="mb_mobile" label-width="100px">
           <el-input v-model="form.mb_mobile" autocomplete="off"></el-input>
@@ -169,7 +169,7 @@
       //修改用户状态
       async changeState(member) {
 
-        await this.$http.put(`rest/members/${member._id}/${member.mb_state} `)
+        await this.$http.put(`rest/members/${member._id}/${member.state} `)
 
       },
       //搜索用户

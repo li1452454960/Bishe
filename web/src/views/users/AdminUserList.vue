@@ -8,12 +8,13 @@
 
         <el-row class="searchRow">
             <el-col>
-               用户名: <el-input @input="handlChange()"  clearable placeholder="请输入用户名" v-model="query"
+                用户名: <el-input @input="handlChange()" clearable placeholder="请输入用户名" v-model="query"
                     class="inputSearch">
                     <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
                 </el-input>
-                
-                <el-button v-if="user.identity == '管理员'"  @click="$router.push('/usersCreate')" type="success">添加用户</el-button>
+
+                <el-button v-if="user.identity == '管理员'" @click="$router.push('/usersCreate')" type="success">添加用户
+                </el-button>
             </el-col>
         </el-row>
 
@@ -28,8 +29,15 @@
             <el-table-column prop="username" label="用户名"></el-table-column>
             <el-table-column prop="identity" label="用户类型"></el-table-column>
             <el-table-column prop="date" label="创建时间">
-        <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
-      </el-table-column>
+                <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
+            </el-table-column>
+            <el-table-column prop="state" label="用户状态">
+                <template slot-scope="scope">
+                    <el-switch @change="changeState(scope.row)" v-model="scope.row.state" active-color="#13ce66"
+                        inactive-color="#ff4949">
+                    </el-switch>
+                </template>
+            </el-table-column>
             <el-table-column v-if="user.identity == '管理员'" fixed="right" label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button size="mini" plain type="primary" icon="el-icon-edit" circle
@@ -65,6 +73,12 @@
             };
         },
         methods: {
+            //修改用户状态
+      async changeState(user) {
+
+        await this.$http.put(`rest/admin_users/${user._id}/${user.state} `)
+
+      },
 
             //搜索用户
             searchUser() {
@@ -144,11 +158,11 @@
                 });
             }
         },
-      computed:{
-        user(){
-            return this.$store.getters.user
-        }
-    },
+        computed: {
+            user() {
+                return this.$store.getters.user
+            }
+        },
         created() {
             this.fetch();
 
@@ -157,10 +171,11 @@
 </script>
 
 <style scoped>
-.body {
-      background: url(../../assets/login.jpg) no-repeat;
-      background-size: 100% 100%;
+    .body {
+        background: url(../../assets/login.jpg) no-repeat;
+        background-size: 100% 100%;
     }
+
     .box-card {
         height: 100%;
     }

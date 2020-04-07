@@ -22,6 +22,13 @@
             <el-option label="员工" value='员工'></el-option>
           </el-select>
         </el-form-item>
+        <!--<el-form-item label="密码" >
+         
+                    <el-switch  v-model="model.state" active-color="#13ce66"
+                        inactive-color="#ff4949">
+                    </el-switch>
+               
+        </el-form-item>-->
          
 
           <el-form-item style="text-align:right;">
