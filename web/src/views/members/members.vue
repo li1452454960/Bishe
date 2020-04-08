@@ -218,11 +218,8 @@
         this.form = {}
         this.dialogFormVisibleAdd = true
       },
-      // submitForm(formName) {
-      //   this.$refs[formName].validate((valid) => {
-      //       if (valid) {
+      
       async addUser() {
-        this.dialogFormVisibleAdd = false
 
         if (this.form._id) {
           await this.$http.put(`rest/members/${this.form._id}`, this.form)
@@ -234,6 +231,7 @@
           type: 'success',
           message: '保存成功'
         });
+        this.dialogFormVisibleAdd = false
         this.fetch()
 
       },

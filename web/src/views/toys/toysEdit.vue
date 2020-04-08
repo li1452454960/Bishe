@@ -14,14 +14,14 @@
 
       <el-tabs v-model="active" tab-position="left"  style="height: 100%px;">
         <el-tab-pane label="基本信息" name="1">
-          <el-form-item  label="玩具分类" prop="child" label-width="100px">
-            <el-select v-model="model.child">
-              <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
-            </el-select>
-          </el-form-item>
            <el-form-item label="玩具名称" prop="parent" label-width="100px">
             <el-select v-model="model.parent">
               <el-option v-for="item in parents" :key="item._id" :label="item.st_name" :value="item._id"></el-option>
+            </el-select>
+          </el-form-item>
+           <el-form-item  label="玩具分类" prop="child" label-width="100px">
+            <el-select disabled v-model="model.parent">
+              <el-option v-for="item in parents" :key="item._id" :label="item.st_tyName" :value="item._id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="单价" prop="ty_price" label-width="100px">
@@ -56,7 +56,7 @@
         </el-tab-pane>
 
         <el-tab-pane label="商品展示" name="3">
-  <el-button size="small" @click="model.pictures.push({})">
+  <el-button type="primary" size="small" @click="model.pictures.push({})">
             <i class="el-icon-plus"></i> 添加图片
           </el-button>
           <el-row type="flex" style="flex-wrap: wrap">
@@ -122,8 +122,6 @@ import { VueEditor } from "vue2-editor";
     data() {
       return {
         active: '1',
-        child: [],
-        children: [],
         parents: [],
         parent: [],
         
@@ -158,11 +156,7 @@ import { VueEditor } from "vue2-editor";
         //console.log(res)
       },
       
-      async getChildren() {
-        const res = await this.$http.get('rest/toyType')
-        this.children = res.data
-        //console.log(res)
-      },
+      
 
       async save() {
 
@@ -188,7 +182,6 @@ import { VueEditor } from "vue2-editor";
     created() {
       this.id && this.fetch()
       this.getParents()
-      this.getChildren()
     }
   }
 </script>

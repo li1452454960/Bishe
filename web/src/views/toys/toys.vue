@@ -25,8 +25,8 @@
       </el-table-column>
       <el-table-column prop="parent.st_id" label="玩具编号" width="150" >
       </el-table-column>
-     <!-- <el-table-column prop="child.tyt_name" label="玩具分类" width="100">
-      </el-table-column>-->
+     <el-table-column prop="parent.st_tyName" label="玩具分类" width="100">
+      </el-table-column>
       <el-table-column prop="parent.st_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="ty_price" label="单价" width="100">
@@ -80,7 +80,7 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
-        child: [],
+        
         parent: [],
         queryData: [],
         allitems: [],
@@ -99,7 +99,7 @@
     created() {
       this.fetchStock();
       this.fetch();
-     
+      
     },
 
     methods: {
@@ -133,7 +133,6 @@
         this.setPaginations()
       },
       loadUserList() {
-        
           this.fetch();
       },
 
@@ -149,6 +148,7 @@
         this.queryData = res.data
         this.setPaginations()
       },
+     
       //分页
       setPaginations() {
         this.paginations.total = this.allitems.length

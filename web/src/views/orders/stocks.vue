@@ -18,6 +18,8 @@
       </el-table-column>
       <el-table-column prop="st_id" label="玩具编号" width="150">
       </el-table-column>
+      <el-table-column prop="st_tyName" label="玩具分类" width="100">
+      </el-table-column>
       <el-table-column prop="st_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="st_unit" label="单位" width="100">
@@ -54,6 +56,11 @@
          <el-form-item label="玩具编号"  label-width="100px">
           <el-input v-model="form.st_id" disabled autocomplete="off" ></el-input>
         </el-form-item>
+        <el-form-item  label="玩具分类" prop="st_tyName" label-width="100px">
+            <el-select v-model="form.st_tyName">
+              <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item.tyt_name"></el-option>
+            </el-select>
+          </el-form-item>
         <el-form-item label="玩具名称" prop="st_name" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
         </el-form-item>
@@ -77,14 +84,14 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogFormVisibleAddStock">
+   <!-- <el-dialog :visible.sync="dialogFormVisibleAddStock">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form">
-        <!-- <el-form-item label="玩具分类" prop="parent " label-width="100px">
+        <el-form-item label="玩具分类" prop="parent " label-width="100px">
             <el-select v-model="form.parent">
           <el-option v-for="item in parents" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
         </el-select>
-          </el-form-item>-->
+          </el-form-item>
           
         <el-form-item label="玩具名称" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
@@ -97,7 +104,7 @@
         <el-button @click="dialogFormVisibleAddStock = false">取 消</el-button>
         <el-button type="primary" @click="add()">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog>-->
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
       :current-page.sync="paginations.page_index" :page-sizes="paginations.page_sizes"
@@ -122,8 +129,9 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
-        // parents: [],
-        // parent: [],   
+        
+        child: [],
+        children: [],   
         allitems: [],
         items: [],
         dialogFormVisibleAdd: false,
@@ -136,6 +144,10 @@
             trigger: 'blur'
           },
           st_unit: {
+            required: true,
+            trigger: 'blur'
+          },
+          st_tyName: {
             required: true,
             trigger: 'blur'
           },
@@ -195,8 +207,6 @@
         this.dialogFormVisibleAdd = true
       },
       async addToys() {
-
-        this.dialogFormVisibleAdd = false
         if (this.form._id) {
           await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
         } else {
@@ -209,6 +219,7 @@
           type: 'success',
           message: '保存成功'
         });
+        this.dialogFormVisibleAdd = false
         this.fetch()
 
       },
@@ -217,6 +228,12 @@
         const res = await this.$http.get('rest/stocks')
         this.allitems = res.data
         this.setPaginations()
+      },
+      //获取玩具分类
+      async getChildren() {
+        const res = await this.$http.get('rest/toyType')
+        this.children = res.data
+        //console.log(res)
       },
       //分页
       setPaginations() {
@@ -274,7 +291,8 @@
     },
     created() {
       this.fetch()
-      // this.getParents();
+     // this.getParents();
+      this.getChildren()
     },
 
   }

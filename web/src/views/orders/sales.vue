@@ -48,12 +48,8 @@
           </el-table-column>
           <el-table-column prop="sl_payment" label="是否付款" width="100">
             <template slot-scope="scope">
-              <span v-if="scope.row.sl_payment==='是'">
-                <span style="color:#4db3ff">{{ scope.row.sl_payment }}</span>
-              </span>
-              <span v-if="scope.row.sl_payment==='否'">
-                <span style="color:#f56767">{{ scope.row.sl_payment }}</span>
-              </span>
+              <el-tag type="success" v-if="scope.row.sl_payment==='是'">已付款</el-tag>
+               <el-tag type="danger" v-if="scope.row.sl_payment==='否'">未付款</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="sl_payType" label="付款方式" width="100">
@@ -127,9 +123,7 @@
           </el-table-column>
           <el-table-column prop="sl_payment" label="是否付款" width="100">
             <template slot-scope="scope">
-              <span v-if="scope.row.sl_payment==='否'">
-                <span style="color:#f56767">{{ '未支付' }}</span>
-              </span>
+              <el-tag type="danger" v-if="scope.row.sl_payment==='否'">未付款</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="sl_delivery" label="是否发货" width="100">
@@ -187,9 +181,7 @@
               <span v-if="scope.row.sl_payType==='支付宝'">
                 <span style="color:#4db3ff">{{ scope.row.sl_payType }}</span>
               </span>
-              <span v-if="scope.row.sl_payType===''">
-                <span style="color:#f56767">{{ '未支付' }}</span>
-              </span>
+              <el-tag type="danger" v-if="scope.row.sl_payType===''">未付款</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="sl_delivery" label="是否发货" width="100">
@@ -248,9 +240,7 @@
               <span v-if="scope.row.sl_payType==='支付宝'">
                 <span style="color:#4db3ff">{{ scope.row.sl_payType }}</span>
               </span>
-              <span v-if="scope.row.sl_payType===''">
-                <span style="color:#f56767">{{ '未支付' }}</span>
-              </span>
+              <el-tag type="danger" v-if="scope.row.sl_payType===''">未付款</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="sl_delivery" label="是否发货" width="100">
@@ -260,16 +250,6 @@
               </span>
               <span v-if="scope.row.sl_delivery==='否'">
                 <span style="color:#f56767">{{ scope.row.sl_delivery }}</span>
-              </span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="sl_receive" label="待确认收货" width="110">
-            <template slot-scope="scope">
-              <span v-if="scope.row.sl_receive==='是'">
-                <span style="color:#4db3ff">{{ scope.row.sl_receive }}</span>
-              </span>
-              <span v-if="scope.row.sl_receive==='否'">
-                <span style="color:#f56767">{{ scope.row.sl_receive }}</span>
               </span>
             </template>
           </el-table-column>

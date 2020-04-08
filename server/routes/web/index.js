@@ -9,6 +9,25 @@ module.exports = app => {
 
     //添加接口
     router.post('/', async(req, res) => {
+        if (req.Model.modelName === 'AdminUser') {
+            assert(req.body.username, 422, '请填写用户名')
+            assert(req.body.identity, 422, '请选择用户类型')
+            assert(req.body.password, 422, '请填写密码')
+        } else if (req.Model.modelName === 'member') {
+            assert(req.body.mb_name, 422, '请填写会员姓名')
+            assert(req.body.mb_sex, 422, '请选择性别')
+            assert(req.body.mb_email, 422, '请填写邮箱')
+            assert(req.body.mb_mobile, 422, '请填写手机号码')
+        } else if (req.Model.modelName === 'toy') {
+            assert(req.body.parent, 422, '请选择要上架玩具')
+            assert(req.body.ty_price, 422, '请填写玩具价格')
+        } else if (req.Model.modelName === 'stock') {
+            assert(req.body.st_name, 422, '请填写入库玩具名称')
+            assert(req.body.st_stock, 422, '请填写入库玩具数量')
+            assert(req.body.st_unit, 422, '请选择入库玩具单位')
+            assert(req.body.st_tyName, 422, '请选择玩具类型')
+        }
+
         const model = await req.Model.create(req.body)
         res.send(model)
 
@@ -84,14 +103,8 @@ module.exports = app => {
 
         const user = await AdminUser.findOne({ username }).select('+password')
         assert(user, 422, '用户不存在')
-        if (user.state != true) {
-            return res.status(400).send({
-                message: '该用户已经被禁用!'
-            })
-
-        }
-
-        //校验密码
+        assert(user.state, 422, '该用户已经被禁用!无法登录')
+            //校验密码
         const isValid = require('bcryptjs').compareSync(password, user.password)
         assert(isValid, 422, '密码错误')
             //返回token

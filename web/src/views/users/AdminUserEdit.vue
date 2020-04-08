@@ -16,26 +16,16 @@
         <el-form-item label="密码" prop="password">
           <el-input type="text" v-model="model.password"></el-input>
         </el-form-item>
-        <el-form-item label="选择身份">
+        <el-form-item label="选择身份" prop="identity">
           <el-select v-model="model.identity" placeholder="请选择身份">
             <el-option label="管理员" value='管理员'></el-option>
             <el-option label="员工" value='员工'></el-option>
           </el-select>
         </el-form-item>
-        <!--<el-form-item label="密码" >
-         
-                    <el-switch  v-model="model.state" active-color="#13ce66"
-                        inactive-color="#ff4949">
-                    </el-switch>
-               
-        </el-form-item>-->
-         
-
-          <el-form-item style="text-align:right;">
-            <el-button type="primary" native-type="submit">保存</el-button>
-            <el-button @click="$router.push(`/usersList`)">取消</el-button>
-
-          </el-form-item>
+        <el-form-item style="text-align:right;">
+          <el-button @click="$router.push(`/usersList`)">取消</el-button>
+          <el-button type="primary" native-type="submit">保存</el-button>
+        </el-form-item>
       </el-form>
     </div>
   </el-card>
@@ -50,31 +40,19 @@
       return {
         model: {},
         rules: {
-          username: [{
-              required: true,
-              message: '请输入用户名',
-              trigger: 'blur'
-            },
-            {
-              min: 2,
-              max: 16,
-              message: '长度在2-16个字符之间',
-              trigger: 'blur'
-            }
-          ],
-          password: [{
-              required: true,
-              message: '请输入密码',
-              trigger: 'blur'
-            },
-            {
-              min: 6,
-              max: 16,
-              message: '长度在6-16之间',
-              trigger: 'blur'
-            }
-          ],
-         
+          username: {
+            required: true,
+            trigger: 'blur'
+          },
+          password: {
+            required: true,
+            trigger: 'blur'
+          },
+          identity: {
+            required: true,
+            trigger: 'blur'
+          },
+
         }
 
       }
@@ -82,7 +60,7 @@
     },
     methods: {
 
-     
+
       afterUpload(res) {
         this.$set(this.model, 'icon', res.url)
         //this.model.icon = res.url
@@ -111,7 +89,7 @@
 
     created() {
       this.id && this.fetch()
-     
+
     }
   }
 </script>
