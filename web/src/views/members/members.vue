@@ -11,15 +11,15 @@
       姓名: <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
       年龄: <el-input  @input="loadUserList()"  clearable placeholder="请输入年龄" v-model="query.mb_age" class="inputSearch"></el-input>
             <template>
-          <el-button type="info" @click="searchUser()" icon="el-icon-search"></el-button>
+          <el-button type="info" plain @click="searchUser()" icon="el-icon-search"></el-button>
         </template>
-        <el-button @click="showAddUserDia()" type="success">添加用户</el-button>
+        <el-button @click="showAddUserDia()" type="primary">会员入会</el-button>
       </el-col>
     </el-row>
 
-    <el-table :data="items">
-      <el-table-column type="index" label="#" width="60">
-      </el-table-column>
+    <el-table :data="items" stripe style="height:650px; overflow:auto;">
+     <el-table-column  type="selection" width="55"></el-table-column>
+     
       <el-table-column prop="mb_name" label="姓名" width="80">
       </el-table-column>
       <el-table-column prop="mb_sex" label="性别" width="80">
@@ -56,18 +56,17 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisibleAdd">
-      <h2>{{form._id ? '编辑' : '添加'}}会员</h2>
-      <el-form :model="form" :rules="rules" ref="form">
+    <el-dialog :title="(form._id ? '编辑会员' : '添加会员')+(form.mb_name ? form.mb_name : '')" :visible.sync="dialogFormVisibleAdd" @open="$refs.mbForm.clearValidate()" >
+      
+      <el-form :model="form" :rules="rules" ref="mbForm">
         <el-form-item label="用户名" prop="mb_name" label-width="100px">
           <el-input v-model="form.mb_name" autocomplete="off" autofocus="true" ></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="mb_sex" label-width="100px">
-          <el-select v-model="form.mb_sex">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-
-          </el-select>
+          <el-radio-group v-model="form.mb_sex">
+            <el-radio label="男" >男</el-radio>
+            <el-radio label="女" >女</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="年龄" prop="mb_age" label-width="100px">
           <el-input v-model="form.mb_age" autocomplete="off"></el-input>
@@ -146,7 +145,7 @@
         paginations: {
           page_index: 1, //当前位于多少页
           total: 0, //总数
-          page_size: 5, //一页显示多少条
+          page_size: 10, //一页显示多少条
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
@@ -215,7 +214,9 @@
 
       //添加会员
       showAddUserDia() {
-        this.form = {}
+        this.form = {
+          mb_sex: "男"
+        }
         this.dialogFormVisibleAdd = true
       },
       
@@ -250,7 +251,7 @@
       setPaginations() {
         this.paginations.total = this.allitems.length
         this.paginations.page_index = 1
-        this.paginations.page_size = 5
+        this.paginations.page_size = 10
         //设置默认分页数据
         this.items = this.allitems.filter((item, index) => {
           return index < this.paginations.page_size

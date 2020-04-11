@@ -17,9 +17,9 @@
         </el-form-item>
         订单编号: <el-input @input="loadUserList()" clearable placeholder="请输入订单编号" v-model="query.sl_id" class="inputSearch"></el-input>
         <template>
-          <el-button type="info" @click="searchUser" icon="el-icon-search" ></el-button>
+          <el-button type="info" plain @click="searchUser" icon="el-icon-search" ></el-button>
         </template>
-        <el-button @click="showAddToysDia()" type="success" style="float: right;">添加分类</el-button>
+        <el-button @click="showAddToysDia()" type="primary" style="float: right;">添加分类</el-button>
       </el-form>
     </el-row>
 

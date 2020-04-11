@@ -9,11 +9,11 @@
     <el-row class="searchRow">
       <el-col>
 
-        <el-button @click="showAddToysDia()" type="success">玩具入库</el-button>
+        <el-button @click="showAddToysDia()" type="primary">玩具入库</el-button>
       </el-col>
     </el-row>
 
-    <el-table :data="items">
+    <el-table :data="items" style="height:650px; overflow:auto;">
       <el-table-column type="index" label="#" width="60">
       </el-table-column>
       <el-table-column prop="parent.mb_name" label="会员名称" width="150">
@@ -83,7 +83,7 @@
         paginations: {
           page_index: 1, //当前位于多少页
           total: 0, //总数
-          page_size: 5, //一页显示多少条
+          page_size: 10, //一页显示多少条
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
@@ -146,7 +146,7 @@
       setPaginations() {
         this.paginations.total = this.allitems.length
         this.paginations.page_index = 1
-        this.paginations.page_size = 5
+        this.paginations.page_size = 10
         //设置默认分页数据
         this.items = this.allitems.filter((item, index) => {
           return index < this.paginations.page_size

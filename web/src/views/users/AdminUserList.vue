@@ -13,7 +13,7 @@
                     <el-button @click="searchUser" slot="append" icon="el-icon-search"></el-button>
                 </el-input>
 
-                <el-button v-if="user.identity == '管理员'" @click="$router.push('/usersCreate')" type="success">添加用户
+                <el-button v-if="user.identity == '管理员'" @click="$router.push('/usersCreate')" type="primary" style="margin-left:10px;">添加用户
                 </el-button>
             </el-col>
         </el-row>
