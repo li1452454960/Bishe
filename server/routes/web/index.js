@@ -36,10 +36,15 @@ module.exports = app => {
 
     //编辑接口
     router.put('/:id', async(req, res) => {
-            const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
-            res.send(model)
-        })
-        //编辑接口
+        const { st_stock, st_number } = req.body
+        if (st_number) {
+            req.body.st_stock = Number(st_stock) + Number(st_number)
+        }
+        const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
+        res.send(model)
+    })
+
+    //状态接口
     router.put('/:id/:state', async(req, res) => {
 
         if (req.params.state == 'true') {

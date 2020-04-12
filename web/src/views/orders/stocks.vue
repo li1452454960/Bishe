@@ -50,7 +50,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisibleAdd" @open="$refs.mbForm.clearValidate()">
+    <el-dialog :visible.sync="dialogFormVisibleAdd">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form" :rules="rules" ref="mbForm">
          <el-form-item label="玩具编号"  label-width="100px">
@@ -84,27 +84,30 @@
       </div>
     </el-dialog>
 
-   <!-- <el-dialog :visible.sync="dialogFormVisibleAddStock">
+    <el-dialog :visible.sync="dialogFormVisibleAddStock">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form">
-        <el-form-item label="玩具分类" prop="parent " label-width="100px">
-            <el-select v-model="form.parent">
-          <el-option v-for="item in parents" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
+        <el-form-item label="玩具分类" prop="st_tyName " label-width="100px">
+            <el-select v-model="form.st_tyName">
+          <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
         </el-select>
           </el-form-item>
           
         <el-form-item label="玩具名称" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="新增入库数量" label-width="100px">
+        <el-form-item label="库存" prop="st_stock" label-width="100px">
+          <el-input v-model="form.st_stock" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新增库存" label-width="100px">
           <el-input v-model="form.st_number" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleAddStock = false">取 消</el-button>
-        <el-button type="primary" @click="add()">确 定</el-button>
+        <el-button type="primary" @click="addToys()">确 定</el-button>
       </div>
-    </el-dialog>-->
+    </el-dialog>
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
       :current-page.sync="paginations.page_index" :page-sizes="paginations.page_sizes"
@@ -179,25 +182,11 @@
       //修改
       editToysDia(row) {
         this.form = row
-        // this.form.st_number = ''
-        this.dialogFormVisibleAdd = true
+        this.form.st_number = ''
+        this.dialogFormVisibleAddStock = true
       },
 
-      // async add() {
-
-      //   this.dialogFormVisibleAddStock = false
-      //   // let stock = this.form.st_number + this.form.st_stock
-
-      //   await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
-
-      //   this.$router.push('/stocks')
-      //   this.$message({
-      //     type: 'success',
-      //     message: '保存成功'
-      //   });
-      //   this.fetch()
-
-      // },
+    
 
       //添加
       showAddToysDia() {
@@ -220,6 +209,7 @@
           message: '保存成功'
         });
         this.dialogFormVisibleAdd = false
+        this.dialogFormVisibleAddStock = false
         this.fetch()
 
       },

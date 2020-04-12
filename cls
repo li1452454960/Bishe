@@ -1,0 +1,41 @@
+[33mcommit 67af79ba522f47bb906d2cadd4dee4b3338b4c46[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: 233 <1452454960@qq.com>
+Date:   Sat Apr 11 22:19:56 2020 +0800
+
+    '首页数据表静态页'
+
+[33mcommit d3aecfd5e5368ebe3a088c35bd4175a2333d1d5a[m
+Author: 233 <1452454960@qq.com>
+Date:   Wed Apr 8 22:11:08 2020 +0800
+
+    '表单验证提交修复'
+
+[33mcommit 59403a7d77a126cbcef98d6bce779c36af2fd44f[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: 233 <1452454960@qq.com>
+Date:   Tue Apr 7 22:25:15 2020 +0800
+
+    '用户状态判断登录权限'
+
+[33mcommit 9ae0d6d6ee09e78238878919e1762d755450374e[m
+Author: 233 <1452454960@qq.com>
+Date:   Sun Apr 5 22:39:42 2020 +0800
+
+    '用户状态设置'
+
+[33mcommit 6b7794eaec5ce9a91cef24135c92fc4db3d2f439[m
+Author: 233 <1452454960@qq.com>
+Date:   Sun Apr 5 15:40:54 2020 +0800
+
+    '开始修改样式'
+
+[33mcommit 7455bb14c564fa55decea8cb86b5c8d4815b38e1[m
+Author: 233 <1452454960@qq.com>
+Date:   Sat Apr 4 23:36:10 2020 +0800
+
+    '完成自增编号'
+
+[33mcommit 8eb5ae6b29f4ceca9e39992d5ba9bded37da0b25[m
+Author: 233 <1452454960@qq.com>
+Date:   Sat Apr 4 21:53:58 2020 +0800
+
+    '自增编号准备'
