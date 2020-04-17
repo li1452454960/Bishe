@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome'}">数据中心</el-breadcrumb-item>
       <el-breadcrumb-item>销售管理</el-breadcrumb-item>
       <el-breadcrumb-item>销售订单</el-breadcrumb-item>
     </el-breadcrumb>
@@ -29,6 +29,8 @@
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
           <el-table-column prop="sl_id" label="订单编号" width="150">
+          </el-table-column>
+           <el-table-column prop="parent.mb_name" label="会员名称" width="100">
           </el-table-column>
           <el-table-column prop="sl_name" label="商品名称" width="100">
           </el-table-column>
@@ -91,9 +93,11 @@
 
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
+            <el-button size="mini" plain type="info" icon="el-icon-search" circle @click="showOrdersDia(scope.row)">
               </el-button>
-              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
+              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editOrdersDia(scope.row)">
+              </el-button>
+              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleOrders(scope.row)">
               </el-button>
             </template>
           </el-table-column>
@@ -139,16 +143,7 @@
           <el-table-column prop="date" label="下单时间">
             <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
           </el-table-column>
-
-
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
-              </el-button>
-              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
-              </el-button>
-            </template>
-          </el-table-column>
+          
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="待发货" name="delivery">
@@ -197,16 +192,6 @@
           
           <el-table-column prop="date" label="下单时间">
             <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
-          </el-table-column>
-
-
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editToysDia(scope.row)">
-              </el-button>
-              <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
-              </el-button>
-            </template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
@@ -268,6 +253,11 @@
       <el-form-item label="订单编号" label-width="100px">
           <el-input v-model="form.sl_id"  autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="会员名称" prop="parent" label-width="100px">
+            <el-select v-model="form.parent">
+              <el-option v-for="item in parents" :key="item._id" :label="item.mb_name" :value="item._id"></el-option>
+            </el-select>
+          </el-form-item>
         <el-form-item label="商品名称" label-width="100px">
           <el-input v-model="form.sl_name" autocomplete="off"></el-input>
         </el-form-item>
@@ -303,6 +293,47 @@
         <el-button type="primary" @click="addToys()">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog :title="'编号—'+form.sl_id+'—的订单详情'" :visible.sync="dialogFormVisibleShow" >
+      
+      <el-form :model="form" class="form">
+      <el-form-item label="订单编号 :" label-width="100px">
+          {{form.sl_id}}
+        </el-form-item>
+        <el-form-item label="会员名称 :" label-width="100px">
+            {{form.parent.mb_name}}
+          </el-form-item>
+          <el-form-item label="手机号码 :" label-width="100px">
+            {{form.parent.mb_mobile}}
+          </el-form-item>
+        <el-form-item label="商品名称 :" label-width="100px">
+          {{form.sl_name}}
+        </el-form-item>
+        <el-form-item label="数量 :" label-width="100px">
+          {{form.sl_number}}
+        </el-form-item>
+        <el-form-item label="单位" label-width="100px">
+        {{form.sl_unit}}
+        </el-form-item>
+        <el-form-item label="单价" label-width="100px">
+        {{form.ty_price}}
+        </el-form-item>
+        <el-form-item label="总额" label-width="100px">
+        {{form.sl_totalPrice}}
+        </el-form-item>
+        <el-form-item label="是否付款" label-width="100px">
+        {{form.sl_payment}}
+        </el-form-item>
+        <el-form-item label="付款方式" label-width="100px">
+        {{form.sl_payType}}
+        </el-form-item>
+        <el-form-item label="是否发货" label-width="100px">
+        {{form.sl_delivery}}
+        </el-form-item>
+        <el-form-item label="待确认收货" label-width="100px">
+        {{form.sl_receive}}
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
       :current-page.sync="paginations.page_index" :page-sizes="paginations.page_sizes"
@@ -332,12 +363,17 @@
           page_sizes: [5, 10, 20], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
+        parents: [],
+        parent: [],
         activeName: 'order',
         queryData: [],
         allitems: [],
         items: [],
         dialogFormVisibleAdd: false,
-        form: {},
+        dialogFormVisibleShow: false,
+        form: {
+          parent: [],
+        },
       }
 
     },
@@ -415,13 +451,27 @@
         })
         this.setPaginations()
       },
-
+      
+       //玩具分类
+      async getParents() {
+        const res = await this.$http.get('rest/members')
+        this.parents = res.data
+        //console.log(res)
+      },
 
       //修改
-      editToysDia(row) {
+      editOrdersDia(row) {
         this.form = row
-
+        
         this.dialogFormVisibleAdd = true
+        this.fetch()
+      },
+      //查看
+      showOrdersDia(row) {
+        this.form = row
+        this.form.parent= row.parent
+        this.dialogFormVisibleShow = true
+        this.fetch()
       },
 
       //添加
@@ -486,9 +536,9 @@
         }
       },
       //删除
-      async deleToys(row) {
+      async deleOrders(row) {
 
-        this.$confirm(`确定删除该订单吗? `, '提示', {
+        this.$confirm(`确定删除编号-${row.sl_id}-该订单吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -511,11 +561,12 @@
     },
     created() {
       this.fetch()
+      this.getParents();
     }
   }
 </script>
 
-<style scoped>
+<style >
   .box-card {
     height: 100%;
   }
@@ -526,5 +577,8 @@
 
   .searchRow {
     margin-top: 20px;
+  }
+  .form .el-form {
+    text-align:center;
   }
 </style>

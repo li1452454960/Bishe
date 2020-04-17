@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome'}">数据中心</el-breadcrumb-item>
       <el-breadcrumb-item>玩具管理</el-breadcrumb-item>
       <el-breadcrumb-item>玩具分类</el-breadcrumb-item>
     </el-breadcrumb>
@@ -50,7 +50,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisibleAdd">
+    <el-dialog :visible.sync="dialogFormVisibleAdd" @open="$refs.mbForm.clearValidate()">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form" :rules="rules" ref="mbForm">
          <el-form-item label="玩具编号"  label-width="100px">
@@ -74,6 +74,7 @@
             <el-option label="只" value="只"></el-option>
           </el-select>
         </el-form-item>
+        
         <el-form-item label="数量" prop="st_stock" label-width="100px">
           <el-input v-model="form.st_stock" autocomplete="off"></el-input>
         </el-form-item>
@@ -132,6 +133,7 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
+        pictures: [],
         
         child: [],
         children: [],   
@@ -160,12 +162,14 @@
             trigger: 'blur'
           },
         },
-
+      
+         
       }
 
     },
 
     methods: {
+     
       //自增编号
       order_nums() {
         var outTradeNo = ""; //订单号
@@ -184,6 +188,7 @@
         this.form = row
         this.form.st_number = ''
         this.dialogFormVisibleAddStock = true
+        /* this.dialogFormVisibleAdd = true */
       },
 
     
@@ -196,6 +201,7 @@
         this.dialogFormVisibleAdd = true
       },
       async addToys() {
+         
         if (this.form._id) {
           await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
         } else {
@@ -289,6 +295,7 @@
 </script>
 
 <style scoped>
+
   .box-card {
     height: 100%;
   }

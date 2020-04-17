@@ -60,16 +60,17 @@ module.exports = app => {
     //获取列表接口
     router.get('/', async(req, res) => {
 
-            const queryOptions = {}
-            if (req.Model.modelName === 'toy' || 'stock' || 'score') {
-                queryOptions.populate = 'parent' || 'child '
-            }
-            const items = await req.Model.find({}).setOptions(queryOptions)
-            res.send(items)
+        const queryOptions = {}
+        if (req.Model.modelName === 'toy' || 'stock' || 'score' || 'sale') {
+            queryOptions.populate = 'parent' || 'child '
+        }
+        const items = await req.Model.find({}).setOptions(queryOptions)
+        res.send(items)
 
 
-        })
-        //删除接口
+    })
+
+    //删除接口
     router.delete('/:id', async(req, res) => {
         await req.Model.findByIdAndDelete(req.params.id, req.body)
         res.send({

@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
     mb_hobby: { type: String },
     mb_mobile: { type: String, },
     mb_email: { type: String, },
+    mb_grade: { type: String, },
     state: { type: Boolean },
     date: { type: Date, default: Date.now },
 

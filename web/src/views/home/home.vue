@@ -2,16 +2,16 @@
   <el-container class="container">
     <el-header class="header">
       <el-row>
-        <el-col :span="4">
+        <el-col :span="6">
           <div class="grid-content bg-purple">
-            <img src="../../assets/logo2.jpg" width="150px" height="60px" alt="无法显示图片">
+            <img src="../../assets/logo5.jpg" width="170px" height="60px" alt="无法显示图片">
           </div>
 
         </el-col>
-        <el-col :span="14" class="middle">
+       <!-- <el-col :span="14" class="middle">
           <img src="../../assets/icon.jpg" alt="无法显示图片">
-        </el-col>
-        <el-col :span="6" class="user">
+        </el-col>-->
+        <el-col :span="18" class="user">
           <div class="userinfo">
             <img :src="user.icon" class="avatar" alt="">
             <div class="welcome">
@@ -39,7 +39,7 @@
         <el-menu router unique-opened :default-active="$route.path" :collapse="isCollapse" :collapse-transition="false">
           <el-menu-item index="/welcome">
               <i class="el-icon-s-grid"></i>
-              <span>首页</span></el-menu-item>
+              <span>数据中心</span></el-menu-item>
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-user-solid"></i>

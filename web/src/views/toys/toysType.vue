@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome'}">数据中心</el-breadcrumb-item>
       <el-breadcrumb-item>玩具管理</el-breadcrumb-item>
       <el-breadcrumb-item>玩具分类</el-breadcrumb-item>
     </el-breadcrumb>
@@ -19,11 +19,11 @@
       <el-table-column prop="tyt_name" label="分类名称" width="100">
       </el-table-column>
 
-      <el-table-column prop="tyt_describe" label="分类描述">
+      <el-table-column prop="tyt_describe" label="分类描述"  :show-overflow-tooltip="true">
       </el-table-column>
 
 
-      <el-table-column prop="date" label="创建时间">
+      <el-table-column prop="date" label="创建时间" >
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
@@ -40,18 +40,19 @@
 
     <el-dialog :visible.sync="dialogFormVisibleAdd">
       <h2>{{form._id ? '编辑' : '添加'}}玩具分类</h2>
-      <el-form :model="form">
+      <el-form :model="form" >
         <el-form-item label="分类名称" label-width="100px">
           <el-input v-model="form.tyt_name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="分类描述" label-width="100px">
-          <el-input v-model="form.tyt_describe" autocomplete="off"></el-input>
+        <el-form-item label="分类描述" label-width="100px" class="input">
+          <el-input v-model="form.tyt_describe" autocomplete="off" ></el-input>
         </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="addToys()">确 定</el-button>
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addToys()">确 定</el-button>
+        
       </div>
     </el-dialog>
 
@@ -104,8 +105,11 @@
       },
 
       async addToys() {
-
-        this.dialogFormVisibleAdd = false
+         if (!this.form.tyt_name) {
+                    this.$message.error('请填写分类名称')
+                    return;
+                }
+        
         if(this.form._id) {
            await this.$http.put(`rest/toyType/${this.form._id}`, this.form)
         }else{
@@ -116,6 +120,7 @@
           type: 'success',
           message: '保存成功'
         });
+        this.dialogFormVisibleAdd = false
         this.fetch()
 
       },
@@ -185,7 +190,7 @@
   }
 </script>
 
-<style scoped >
+<style  >
   .box-card {
     height: 100%;
   }
@@ -197,6 +202,8 @@
   .searchRow {
     margin-top: 20px;
   }
-
+ /*  .input .el-input__inner{
+    height: 100px;
+  } */
   
 </style>

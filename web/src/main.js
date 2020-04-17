@@ -11,26 +11,26 @@ Vue.config.productionTip = false
 
 Vue.prototype.$http = http
 Vue.mixin({
-  computed: {
-    uploadUrl(){
-      return this.$http.defaults.baseURL + '/upload'
-    }
-  },
-  methods: {
-    getAuthHeaders(){
-      return{
-        Authorization: `Bearer ${localStorage.token || ''}`
-      }
-    }
-  },
+    computed: {
+        uploadUrl() {
+            return this.$http.defaults.baseURL + '/upload'
+        }
+    },
+    methods: {
+        getAuthHeaders() {
+            return {
+                Authorization: `Bearer ${localStorage.token || ''}`
+            }
+        }
+    },
 })
 
-Vue.filter('fmtdate', (v)=> {
-  return moment(v).format('YYYY-MM-DD')
+Vue.filter('fmtdate', (v) => {
+    return moment(v).format('YYYY-MM-DD')
 })
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')

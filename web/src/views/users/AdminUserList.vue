@@ -1,7 +1,7 @@
 <template>
     <el-card>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/welcome'}">数据中心</el-breadcrumb-item>
             <el-breadcrumb-item>用户管理</el-breadcrumb-item>
             <el-breadcrumb-item>用户列表</el-breadcrumb-item>
         </el-breadcrumb>
@@ -31,7 +31,7 @@
             <el-table-column prop="date" label="创建时间">
                 <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
             </el-table-column>
-            <el-table-column prop="state" label="用户状态">
+            <el-table-column v-if="user.identity == '管理员'"  prop="state" label="用户状态">
                 <template slot-scope="scope">
                     <el-switch @change="changeState(scope.row)" v-model="scope.row.state" active-color="#13ce66"
                         inactive-color="#ff4949">

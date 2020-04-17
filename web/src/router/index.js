@@ -17,54 +17,53 @@ import Stocks from '../views/orders/stocks.vue'
 Vue.use(Router)
 const routerPush = Router.prototype.push
 Router.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error=> error)
+    return routerPush.call(this, location).catch(error => error)
 }
 
 
 const router = new Router({
-  routes: [
-     {
-       name: 'login',
-       path: '/login',
-       component: Login,
-       meta: {isPublic: true}
-     },
-    {
-      name: 'home',
-      path: '/',
-      component: Home,
-      children: [
-      {path: '/welcome',component: Welcome},
+        routes: [{
+                name: 'login',
+                path: '/',
+                component: Login,
+                meta: { isPublic: true }
+            },
+            {
+                name: 'home',
+                path: '/',
+                component: Home,
+                children: [
+                    { path: '/welcome', component: Welcome },
 
-      {path: '/membersPoint',component:  MembersPoint},
+                    { path: '/membersPoint', component: MembersPoint },
 
-      {path: '/members',component:  Members } ,
+                    { path: '/members', component: Members },
 
-      {path: '/toys',component:  Toys },
-      {path: '/toysCreate', component: ToysEdit },
-      {path: '/toysEdit/:id', component: ToysEdit, props: true },
+                    { path: '/toys', component: Toys },
+                    { path: '/toysCreate', component: ToysEdit },
+                    { path: '/toysEdit/:id', component: ToysEdit, props: true },
 
-      {path: '/toysType',component:  ToysType },
+                    { path: '/toysType', component: ToysType },
 
-      {path: '/usersCreate', component: AdminUserEdit },
-      {path: '/usersEdit/:id', component: AdminUserEdit, props: true },
-      {path: '/usersList', component: AdminUserList },
+                    { path: '/usersCreate', component: AdminUserEdit },
+                    { path: '/usersEdit/:id', component: AdminUserEdit, props: true },
+                    { path: '/usersList', component: AdminUserList },
 
-      {path: '/sales',component:  Sales } ,
+                    { path: '/sales', component: Sales },
 
-      {path: '/stocks',component:  Stocks } ,
+                    { path: '/stocks', component: Stocks },
 
-    ]
-    },
-    
-  ]
-})
-//客户端路由限制,路由守卫
+                ]
+            },
+
+        ]
+    })
+    //客户端路由限制,路由守卫
 router.beforeEach((to, from, next) => {
-  if (!to.meta.isPublic && !localStorage.token){
-    return next('/login')
-  }
-  next()
+    if (!to.meta.isPublic && !localStorage.token) {
+        return next('/login')
+    }
+    next()
 })
 
 export default router

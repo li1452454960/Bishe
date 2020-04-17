@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome'}">数据中心</el-breadcrumb-item>
       <el-breadcrumb-item>玩具管理</el-breadcrumb-item>
       <el-breadcrumb-item>玩具分类</el-breadcrumb-item>
     </el-breadcrumb>
@@ -9,7 +9,7 @@
     <el-row class="searchRow">
       <el-col>
 
-        <el-button @click="showAddToysDia()" type="primary">玩具入库</el-button>
+        <el-button @click="showAddScoreDia()" type="primary">玩具入库</el-button>
       </el-col>
     </el-row>
 
@@ -36,9 +36,9 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" plain type="primary" icon="el-icon-plus" circle @click="editToysDia(scope.row)">
+          <el-button size="mini" plain type="primary" icon="el-icon-plus" circle @click="editScoreDia(scope.row)">
           </el-button>
-          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleToys(scope.row)">
+          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleScoreDia(scope.row)">
           </el-button>
         </template>
       </el-table-column>
@@ -64,7 +64,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addToys()">确 定</el-button>
+        <el-button type="primary" @click="addScore()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -107,18 +107,18 @@
         //console.log(res)
       },
       //修改
-      editToysDia(row) {
+      editScoreDia(row) {
         this.form = row
         this.form.parent= row.parent.mb_name
         this.dialogFormVisibleAdd = true
         this.fetch()
       },
       //添加
-      showAddToysDia() {
+      showAddScoreDia() {
         this.form = {}
         this.dialogFormVisibleAdd = true
       },
-      async addToys() {
+      async addScore() {
 
         this.dialogFormVisibleAdd = false
         if (this.form._id) {
@@ -173,7 +173,7 @@
         }
       },
       //删除
-      async deleToys(row) {
+      async deleScoreDia(row) {
 
         this.$confirm(`确定删除 "${row.st_name}" 玩具吗? `, '提示', {
           confirmButtonText: '确定',

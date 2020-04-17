@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/welcome'}">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/welcome'}">数据中心</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -11,15 +11,15 @@
       姓名: <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
       年龄: <el-input  @input="loadUserList()"  clearable placeholder="请输入年龄" v-model="query.mb_age" class="inputSearch"></el-input>
             <template>
-          <el-button type="info" plain @click="searchUser()" icon="el-icon-search"></el-button>
+          <el-button type="info" plain @click="searchMember()" icon="el-icon-search"></el-button>
         </template>
-        <el-button @click="showAddUserDia()" type="primary">会员入会</el-button>
+        <el-button @click="showAddMemberDia()" type="primary">会员入会</el-button>
       </el-col>
     </el-row>
 
     <el-table :data="items" stripe style="height:650px; overflow:auto;">
-     <el-table-column  type="selection" width="55"></el-table-column>
-     
+      <el-table-column type="index" label="#" width="60">
+      </el-table-column>
       <el-table-column prop="mb_name" label="姓名" width="80">
       </el-table-column>
       <el-table-column prop="mb_sex" label="性别" width="80">
@@ -32,7 +32,8 @@
       </el-table-column>
       <el-table-column prop="mb_mobile" label="电话">
       </el-table-column>
-
+      <el-table-column prop="mb_grade" label="会员级别">
+      </el-table-column>
       <el-table-column prop="date" label="创建时间">
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
@@ -80,10 +81,18 @@
         <el-form-item label="电话" prop="mb_mobile" label-width="100px">
           <el-input v-model="form.mb_mobile" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="会员等级" prop="mb_grade" label-width="100px">
+         <el-select v-model="form.mb_grade" style="width:200px">
+                    <el-option label="普通会员" value="普通会员"></el-option>
+                    <el-option label="黄金会员" value="黄金会员"></el-option>
+                    <el-option label="钻石会员" value="钻石会员"></el-option>
+                    
+                  </el-select>
+        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="addUser()">确 定</el-button>
+      <el-button type="primary" @click="addMeber()">确 定</el-button>
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
       </div>
     </el-dialog>
@@ -172,7 +181,7 @@
 
       },
       //搜索用户
-      searchUser() {
+      searchMember() {
         if (this.query.mb_name === '' && this.query.mb_age === '') {
           this.$message({
             type: "warning",
@@ -213,14 +222,14 @@
 
 
       //添加会员
-      showAddUserDia() {
+      showAddMemberDia() {
         this.form = {
           mb_sex: "男"
         }
         this.dialogFormVisibleAdd = true
       },
       
-      async addUser() {
+      async addMeber() {
 
         if (this.form._id) {
           await this.$http.put(`rest/members/${this.form._id}`, this.form)

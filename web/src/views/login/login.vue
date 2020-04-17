@@ -5,10 +5,10 @@
     label-position="top"
      label-width="80px">
      <h2>用户登录</h2>
-      <el-form-item label="用户名" >
-        <el-input v-model="model.username" placeholder="请输入用户名"></el-input>
+      <el-form-item class="item" label="用户名" >
+        <el-input  v-model="model.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item class="item" label="密码">
         <el-input type="password" v-model="model.password" placeholder="请输入密码"></el-input>
       </el-form-item>
      <el-button  @click.prevent = "handleLogin()" 
@@ -69,25 +69,32 @@ import jwt_decode from 'jwt-decode';
 
 </script>
 
-<style scoped>
+<style >
     
     .login-warp{
         height: 100vh;
-        background: url(../../assets/login.jpg) no-repeat;
+        background: url(../../assets/login3.jpg) no-repeat;
         background-size: 100% 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
         
     }
     .login-warp .login-form {
         width: 400px;
-        background-color: #e8f5fc90;
-        margin-top: 150px;
-        margin-left: 1000px;
+        background-color: #07070770;
+       /*  margin-top: 150px;
+        margin-left: 1000px; */
+        color: #fff;
         border-radius: 5px;
         padding: 30px;
         
     }
+    .item .el-form-item__label{
+      color: #fff;
+        
+    }
+    
     h2{
       text-align: center;
     }

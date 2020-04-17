@@ -208,6 +208,17 @@
         return this.$store.getters.user
       }
     },
+    methods: {
+      
+      //  async dataCount() {
+      //   const res = await this.$http.get("rest/count")
+      //   this.model = res.data
+      // },
+    },
+     created() {
+            // this.dataCount();
+
+        }
   }
 </script>
 

@@ -2,7 +2,7 @@
   <el-card>
     <div class="about">
       <h1>{{id ? '编辑' : '新建'}}管理员</h1>
-      <el-form label-width="120px" @submit.native.prevent="save" :rules="rules" ref="userForm">
+      <el-form label-width="120px" @submit.native.prevent="save" :model="model" :rules="rules" ref="userForm">
         <el-form-item label="头像">
           <el-upload class="avatar-uploader" :action="uploadUrl" :headers="getAuthHeaders()" :show-file-list="false"
             :on-success="afterUpload">
@@ -16,7 +16,7 @@
         <el-form-item label="密码" prop="password">
           <el-input type="text" v-model="model.password"></el-input>
         </el-form-item>
-        <el-form-item label="选择身份" prop="identity">
+        <el-form-item label="用户类型" prop="identity">
           <el-select v-model="model.identity" placeholder="请选择身份">
             <el-option label="管理员" value='管理员'></el-option>
             <el-option label="员工" value='员工'></el-option>
@@ -43,16 +43,31 @@
           password: '',
         },
         rules: {
-          username: {
-            required: true,
-            message: '用户名不能为空',
-            trigger: 'blur'
-          },
-          password: {
-            required: true,
-            message: '密码不能为空',
-            trigger: 'blur'
-          },
+
+          username: [{
+              required: true,
+              message: '用户名不能为空',
+              trigger: 'blur'
+            },
+            {
+              min: 2,
+              max: 8,
+              message: '长度在2-8个字符之间',
+              trigger: 'blur'
+            }
+          ],
+          password: [{
+              required: true,
+              message: '密码不能为空',
+              trigger: 'blur'
+            },
+            {
+              min: 6,
+              max: 16,
+              message: '长度在6-30之间',
+              trigger: 'blur'
+            }
+          ],
           identity: {
             required: true,
             trigger: 'blur'

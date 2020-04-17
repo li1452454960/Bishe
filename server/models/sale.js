@@ -13,6 +13,7 @@ const schema = new mongoose.Schema({
     sl_delivery: { type: String },
     sl_receive: { type: String },
     date: { type: Date, default: Date.now },
+    parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'member' },
 
 
 })
