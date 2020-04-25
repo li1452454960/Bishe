@@ -7,10 +7,9 @@
     </el-breadcrumb>
 
     <el-row class="searchRow">
-      <el-col>
-
+     <!-- <el-col>
         <el-button @click="showAddScoreDia()" type="primary">玩具入库</el-button>
-      </el-col>
+      </el-col>-->
     </el-row>
 
     <el-table :data="items" style="height:650px; overflow:auto;">
@@ -38,14 +37,14 @@
         <template slot-scope="scope">
           <el-button size="mini" plain type="primary" icon="el-icon-plus" circle @click="editScoreDia(scope.row)">
           </el-button>
-          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleScoreDia(scope.row)">
-          </el-button>
+        <!--  <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleScoreDia(scope.row)">
+          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :visible.sync="dialogFormVisibleAdd">
-      <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
+      <h2>{{form._id ? '编辑会员积分' : '新增会员积分'}}</h2>
       <el-form :model="form" >
       <el-form-item label="会员名称" prop="parent" label-width="100px">
             <el-select v-model="form.parent">
@@ -173,7 +172,7 @@
         }
       },
       //删除
-      async deleScoreDia(row) {
+    /*   async deleScoreDia(row) {
 
         this.$confirm(`确定删除 "${row.st_name}" 玩具吗? `, '提示', {
           confirmButtonText: '确定',
@@ -193,7 +192,7 @@
           this.fetch()
 
         })
-      }
+      } */
 
     },
     created() {

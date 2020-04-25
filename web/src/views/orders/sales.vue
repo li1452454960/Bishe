@@ -19,7 +19,7 @@
         <template>
           <el-button type="info" plain @click="searchUser" icon="el-icon-search" ></el-button>
         </template>
-        <el-button @click="showAddToysDia()" type="primary" style="float: right;">添加分类</el-button>
+       <!-- <el-button @click="showAddToysDia()" type="primary" style="float: right;">添加分类</el-button> -->
       </el-form>
     </el-row>
 
@@ -93,10 +93,10 @@
 
           <el-table-column label="操作">
             <template slot-scope="scope">
-            <el-button size="mini" plain type="info" icon="el-icon-search" circle @click="showOrdersDia(scope.row)">
+            <el-button size="mini" plain type="primary" icon="el-icon-search" circle @click="showOrdersDia(scope.row)">
               </el-button>
-              <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editOrdersDia(scope.row)">
-              </el-button>
+            <!--  <el-button size="mini" plain type="primary" icon="el-icon-edit" circle @click="editOrdersDia(scope.row)"> 
+              </el-button> -->
               <el-button size="mini" plain type="danger" icon="el-icon-delete" circle @click="deleOrders(scope.row)">
               </el-button>
             </template>
@@ -538,7 +538,7 @@
       //删除
       async deleOrders(row) {
 
-        this.$confirm(`确定删除编号-${row.sl_id}-该订单吗? `, '提示', {
+        this.$confirm(`确定删除编号--${row.sl_id}--订单吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

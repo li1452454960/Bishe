@@ -8,11 +8,13 @@
 
     <el-row class="searchRow">
       <el-col>
-        
-      玩具名称: <el-input @input="loadUserList()" clearable placeholder="请输入名称" v-model="query.ty_name" class="inputSearch"></el-input>
+      玩具分类: <el-select @input="loadUserList()" v-model="query.tyt_name"  clearable placeholder="请选择玩具分类" class="inputSearch">
+                <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item.tyt_name">
+                </el-option>
+              </el-select>  
+      玩具名称: <el-input @input="loadUserList()" clearable placeholder="请输入名称" v-model="query.parent" class="inputSearch"></el-input>
       单价: <el-input @input="loadUserList()"  clearable placeholder="请输入单价" v-model="query.ty_price" class="inputSearch"></el-input>
-        
-        
+      
         <template>
           <el-button type="info" plain @click="searchUser" icon="el-icon-search"></el-button>
         </template>
@@ -70,8 +72,9 @@
       return {
         form: {},
         query: {
-          ty_name: '',
-          ty_price: ''
+          parent: '',
+          ty_price: '',
+          tyt_name: ''
         },
         paginations: {
           page_index: 1, //当前位于多少页
@@ -80,7 +83,7 @@
           page_sizes: [5, 10, 15], //每页显示多少条
           layout: 'total,sizes,prev,pager,next,jumper' // 翻页属性
         },
-        
+        children:[],
         parent: [],
         queryData: [],
         allitems: [],
@@ -97,6 +100,7 @@
         }
     },
     created() {
+      this.fetchToyType();
       this.fetchStock();
       this.fetch();
       
@@ -105,27 +109,31 @@
     methods: {
       //搜索用户
       searchUser() {
-         if (this.query.ty_name === '' && this.query.ty_price === '') {
+         if (this.query.parent === '' && this.query.ty_price === '' && this.query.tyt_name === '') {
           this.$message({
             type: "warning",
-            message: "请输入搜索内容"
+            message: "请输入搜索条件"
           })
           this.fetch();
           return
         }
         this.allitems = this.queryData.filter(item => {
 
-          let tyName = item.ty_name
+          let tyName = item.parent.st_name
+          let tytName = item.parent.st_tyName
           let tyPrice = item.ty_price.toString()
-          if (this.query.ty_name) {
-            return this.query.ty_name === tyName
+          if (this.query.parent) {
+            return this.query.parent === tyName
           } else
           if (this.query.ty_price) {
             return this.query.ty_price === tyPrice
+          }else
+          if (this.query.tyt_name) {
+            return this.query.tyt_name == tytName
           } else
-           if (this.query.ty_name && this.query.ty_price) 
+           if (this.query.parent && this.query.ty_price) 
           {
-            return this.query.ty_name === tyName && this.query.ty_price === tyPrice
+            return this.query.parent === tyName && this.query.ty_price === tyPrice
           }
 
 
@@ -140,6 +148,11 @@
       async fetchStock() {
         const res = await this.$http.get('rest/stocks')
         this.allitems = res.data
+      },
+      // 获取列表
+      async fetchToyType() {
+        const res = await this.$http.get('rest/toyType')
+        this.children = res.data
       },
       //获取会员列表
       async fetch() {
@@ -183,7 +196,7 @@
       //删除会员
       async deleToys(row) {
 
-        this.$confirm(`确定下架 "${row.ty_name}" 玩具吗? `, '提示', {
+        this.$confirm(`确定下架 "${row.parent.st_name}" 玩具吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

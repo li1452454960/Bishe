@@ -101,7 +101,7 @@
           <el-input v-model="form.st_stock" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="新增库存" label-width="100px">
-          <el-input v-model="form.st_number" autocomplete="off"></el-input>
+          <el-input  v-model="form.st_number" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -186,7 +186,9 @@
       //修改
       editToysDia(row) {
         this.form = row
-        this.form.st_number = ''
+        if(this.form.st_number){
+          this.form.st_number = ''
+        }
         this.dialogFormVisibleAddStock = true
         /* this.dialogFormVisibleAdd = true */
       },
@@ -204,16 +206,20 @@
          
         if (this.form._id) {
           await this.$http.put(`rest/stocks/${this.form._id}`, this.form)
+          this.$router.push('/stocks')
+        this.$message({
+          type: 'success',
+          message: '新增库存成功'
+        });
         } else {
           await this.$http.post('rest/stocks', this.form)
-        
-        }
-       
         this.$router.push('/stocks')
         this.$message({
           type: 'success',
-          message: '保存成功'
+          message: '入库成功'
         });
+        }
+       
         this.dialogFormVisibleAdd = false
         this.dialogFormVisibleAddStock = false
         this.fetch()
@@ -264,16 +270,12 @@
       //删除
       async deleToys(row) {
 
-        this.$confirm(`确定删除 "${row.st_name}" 玩具吗? `, '提示', {
+        this.$confirm(`确定从库存中删除 "${row.st_name}" 玩具吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          await this.$http.delete(`rest/stocks/${row._id}`)
-          // console.log(res)
-          //   if (res.data.meta.status === 200) {
-          //     this.queryInfo.pagenum = 1
-
+          await this.$http.delete(`rest/stocks/${row._id}`)        
           this.$message({
             type: 'success',
             message: "删除成功"

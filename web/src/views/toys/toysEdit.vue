@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <div class="about">
-      <h1>{{id ? '编辑' : '上架'}}玩具</h1>
+      <h1>{{id ? '编辑上架玩具信息' : '上架玩具'}}</h1>
 
       <el-steps :active="1*active" simple>
         <el-step title="基本信息" icon="el-icon-edit"></el-step>
@@ -14,7 +14,7 @@
 
         <el-tabs v-model="active" tab-position="left" style="height: 100%px;" >
           <el-tab-pane label="基本信息" name="1" >
-            <el-form-item label="玩具名称" prop="parent" label-width="100px">
+            <el-form-item label="选择库存玩具" prop="parent" label-width="100px">
               <el-select v-model="model.parent">
                 <el-option v-for="item in parents" :key="item._id" :label="item.st_name" :value="item._id"></el-option>
               </el-select>
@@ -214,14 +214,20 @@
 
         if (this.id) {
           await this.$http.put(`rest/toys/${this.id}`, this.model)
-        } else {
-          await this.$http.post('rest/toys', this.model)
-        }
-        this.$router.push('/toys')
+          this.$router.push('/toys')
         this.$message({
           type: 'success',
-          message: '保存成功'
+          message: '编辑上架玩具成功'
         })
+        } else {
+          await this.$http.post('rest/toys', this.model)
+           this.$router.push('/toys')
+          this.$message({
+          type: 'success',
+          message: '上架成功'
+        })
+        }
+       
       },
        async fetch() {
         const res = await this.$http.get(`rest/toys/${this.id}`)

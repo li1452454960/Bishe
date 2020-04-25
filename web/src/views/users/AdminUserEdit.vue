@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <div class="about">
-      <h1>{{id ? '编辑' : '新建'}}管理员</h1>
+      <h1>{{id ? '编辑' : '新建'}}用户</h1>
       <el-form label-width="120px" @submit.native.prevent="save" :model="model" :rules="rules" ref="userForm">
         <el-form-item label="头像">
           <el-upload class="avatar-uploader" :action="uploadUrl" :headers="getAuthHeaders()" :show-file-list="false"
@@ -14,7 +14,7 @@
           <el-input v-model="model.username"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="text" v-model="model.password"></el-input>
+          <el-input v-model="model.password"></el-input>
         </el-form-item>
         <el-form-item label="用户类型" prop="identity">
           <el-select v-model="model.identity" placeholder="请选择身份">
@@ -90,14 +90,20 @@
 
         if (this.id) {
           await this.$http.put(`rest/admin_users/${this.id}`, this.model)
-        } else {
-          await this.$http.post('rest/admin_users', this.model)
-        }
-        this.$router.push('/usersList')
+          this.$router.push('/usersList')
         this.$message({
           type: 'success',
-          message: '保存成功'
+          message: '编辑用户成功'
         })
+        } else {
+          await this.$http.post('rest/admin_users', this.model)
+          this.$router.push('/usersList')
+        this.$message({
+          type: 'success',
+          message: '添加用户成功'
+        })
+        }
+        
       },
       async fetch() {
         const res = await this.$http.get(`rest/admin_users/${this.id}`)

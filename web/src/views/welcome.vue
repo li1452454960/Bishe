@@ -98,7 +98,7 @@
       // 绘制图表
       myChartColumn.setOption({
         title: {
-          text: '上周统计'
+          text: '每月新增统计'
         },
         tooltip: {},
         xAxis: {

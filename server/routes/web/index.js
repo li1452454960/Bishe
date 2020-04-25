@@ -66,8 +66,6 @@ module.exports = app => {
         }
         const items = await req.Model.find({}).setOptions(queryOptions)
         res.send(items)
-
-
     })
 
     //删除接口

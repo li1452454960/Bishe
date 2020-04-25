@@ -24,7 +24,15 @@
       </el-table-column>
       <el-table-column prop="mb_sex" label="性别" width="80">
       </el-table-column>
-      <el-table-column prop="mb_age" label="年龄" width="80">
+      <el-table-column prop="mb_age" label="年龄" width="150">
+       <template slot-scope="scope">
+          <span v-if="scope.row.mb_age > 18 ">
+            <span style="color:#f56767">{{ scope.row.mb_age }}（超出年龄限制）</span>
+          </span>
+          <span v-if="scope.row.mb_age <= 18 ">
+            <span style="color:#00d053">{{ scope.row.mb_age }}</span>
+          </span>
+        </template>
       </el-table-column>
       <el-table-column prop="mb_hobby" label="兴趣爱好">
       </el-table-column>
@@ -38,7 +46,7 @@
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>
       </el-table-column>
 
-      <el-table-column prop="state" label="用户状态" >
+      <el-table-column prop="state" label="会员状态" >
         <template slot-scope="scope">
           <el-switch @change="changeState(scope.row)" v-model="scope.row.state" active-color="#13ce66"
             inactive-color="#ff4949">
@@ -57,7 +65,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="(form._id ? '编辑会员' : '添加会员')+(form.mb_name ? form.mb_name : '')" :visible.sync="dialogFormVisibleAdd" @open="$refs.mbForm.clearValidate()" >
+    <el-dialog :title="(form._id ? '编辑会员 --' : '添加会员')+(form.mb_name ? form.mb_name : '')" :visible.sync="dialogFormVisibleAdd" @open="$refs.mbForm.clearValidate()" >
       
       <el-form :model="form" :rules="rules" ref="mbForm">
         <el-form-item label="用户名" prop="mb_name" label-width="100px">
@@ -233,14 +241,20 @@
 
         if (this.form._id) {
           await this.$http.put(`rest/members/${this.form._id}`, this.form)
-        } else {
-          await this.$http.post('rest/members', this.form)
-        }
-        this.$router.push('/members')
+           this.$router.push('/members')
         this.$message({
           type: 'success',
-          message: '保存成功'
+          message: '编辑会员成功'
         });
+        } else {
+          await this.$http.post('rest/members', this.form)
+           this.$router.push('/members')
+        this.$message({
+          type: 'success',
+          message: '入会成功'
+        });
+        }
+       
         this.dialogFormVisibleAdd = false
         this.fetch()
 
@@ -289,7 +303,7 @@
       //删除会员
       async deleMb(row) {
 
-        this.$confirm(`确定删除 "${row.mb_name}" 用户? `, '提示', {
+        this.$confirm(`确定把 "${row.mb_name}" 会员退会处理吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -301,7 +315,7 @@
 
           this.$message({
             type: 'success',
-            message: "删除成功"
+            message: "退会成功"
 
           });
           this.fetch()

@@ -4,7 +4,7 @@
     class="login-form"
     label-position="top"
      label-width="80px">
-     <h2>用户登录</h2>
+     <h2>玩具店会员管理系统</h2>
       <el-form-item class="item" label="用户名" >
         <el-input  v-model="model.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
@@ -73,7 +73,7 @@ import jwt_decode from 'jwt-decode';
     
     .login-warp{
         height: 100vh;
-        background: url(../../assets/login3.jpg) no-repeat;
+        background: url(../../assets/login4.jpg) no-repeat;
         background-size: 100% 100%;
         display: flex;
         justify-content: center;
