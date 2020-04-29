@@ -42,7 +42,7 @@
               <span>数据中心</span></el-menu-item>
           <el-submenu index="1">
             <template slot="title">
-              <i class="el-icon-user-solid"></i>
+              <i class="el-icon-user"></i>
               <span>用户管理</span>
             </template>
             <el-menu-item index="/usersList">
@@ -52,7 +52,7 @@
 
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-user"></i>
+              <i class="el-icon-s-custom"></i>
               <span>会员管理</span>
             </template>
             <el-menu-item index="members">

@@ -15,14 +15,14 @@
               <el-button type="primary" plain icon="el-icon-s-home" @click="$router.push('/stocks')">玩具入库</el-button>
             </el-col>
             <el-col :span="8">
-              <el-button type="primary" plain icon="el-icon-user" @click="$router.push('/members')">会员入会</el-button>
+              <el-button type="primary" plain icon="el-icon-s-custom" @click="$router.push('/members')">会员入会</el-button>
             </el-col>
             <el-col :span="8">
               <el-button type="primary" plain icon="el-icon-s-order" v-if="user.identity == '管理员'"
                 @click="$router.push('/sales')">销售订单</el-button>
             </el-col>
             <el-col :span="8">
-              <el-button type="primary" plain icon="el-icon-user-solid" v-if="user.identity == '管理员'"
+              <el-button type="primary" plain icon="el-icon-user" v-if="user.identity == '管理员'"
                 @click="$router.push('/usersCreate')">添加用户</el-button>
             </el-col>
             <el-col :span="8">
@@ -43,7 +43,7 @@
               待确认订单 / <span>15</span>
             </el-col>
             <el-col class="item" :span="12">
-              待审商品 / <span>10</span>
+              待添加库存 / <span>10</span>
             </el-col>
             <el-col class="item" :span="12">
               待发货订单 / <span>20</span>
@@ -92,7 +92,7 @@
     mounted() {
 
 
-      // 基于准备好的dom，初始化echarts实例
+      // 基于准备好的dom，初始化echarts
       var myChartColumn = echarts.init(document.getElementById('column'));
       var myChartPie = echarts.init(document.getElementById('pie'));
       // 绘制图表
@@ -169,26 +169,11 @@
               }
             }
           },
-          data: [{
-              value: 35,
-              name: '体育玩具'
-            },
-            {
-              value: 31,
-              name: '智力玩具'
-            },
-            {
-              value: 23,
-              name: '科教玩具'
-            },
-            {
-              value: 13,
-              name: '军事玩具'
-            },
-            {
-              value: 154,
-              name: '装饰玩具'
-            }
+          data: [{value: 35,  name: '体育玩具' },
+            { value: 31,name: '智力玩具'},
+            {value: 23,name: '科教玩具'},
+            {value: 13,name: '军事玩具'},
+            {value: 154,name: '装饰玩具'}
           ],
           emphasis: {
             itemStyle: {

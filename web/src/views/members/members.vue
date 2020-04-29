@@ -202,17 +202,17 @@
 
           let mbName = item.mb_name
           let mbAge = item.mb_age.toString()
-          if (this.query.mb_name) {
-            return this.query.mb_name === mbName
-          } else
-          if (this.query.mb_age) {
-            return this.query.mb_age === mbAge
-          } else
-            if (this.query.mb_name && this.query.mb_age) 
+           if (this.query.mb_name && this.query.mb_age) 
           {
             return this.query.mb_name === mbName && this.query.mb_age === mbAge
           }
-
+          else
+          if (this.query.mb_age) {
+            return this.query.mb_age === mbAge
+          } else
+            if (this.query.mb_name) {
+            return this.query.mb_name === mbName
+          }
 
         })
         this.setPaginations()

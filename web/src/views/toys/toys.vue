@@ -37,6 +37,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="parent.st_stock" label="库存" width="150">
+      <template slot-scope="scope">
+          <span v-if="scope.row.parent.st_stock <= 20 ">
+            <span style="color:#f56767">{{ scope.row.parent.st_stock }}（库存不足）</span>
+          </span>
+          <span v-if="scope.row.parent.st_stock > 20 ">
+            <span style="color:#00d053">{{ scope.row.parent.st_stock}}</span>
+          </span>
+        </template>
       </el-table-column>
       <el-table-column prop="parent.st_unit" label="单位" width="150">
       </el-table-column>
@@ -122,20 +130,29 @@
           let tyName = item.parent.st_name
           let tytName = item.parent.st_tyName
           let tyPrice = item.ty_price.toString()
-          if (this.query.parent) {
-            return this.query.parent === tyName
-          } else
+           if (this.query.parent && this.query.ty_price && this.query.tyt_name) 
+          {
+            return this.query.parent === tyName && this.query.ty_price === tyPrice && this.query.tyt_name == tytName
+          }else
+           if (this.query.parent  && this.query.tyt_name) 
+          {
+            return this.query.parent === tyName && this.query.tyt_name == tytName
+          }else if ( this.query.ty_price && this.query.tyt_name) 
+          {
+            return  this.query.ty_price === tyPrice && this.query.tyt_name == tytName
+          }else if (this.query.parent && this.query.ty_price ) 
+          {
+            return this.query.parent === tyName && this.query.ty_price === tyPrice 
+          }else
           if (this.query.ty_price) {
             return this.query.ty_price === tyPrice
           }else
           if (this.query.tyt_name) {
             return this.query.tyt_name == tytName
           } else
-           if (this.query.parent && this.query.ty_price) 
-          {
-            return this.query.parent === tyName && this.query.ty_price === tyPrice
-          }
-
+          if (this.query.parent) {
+            return this.query.parent === tyName
+          } 
 
         })
         this.setPaginations()
