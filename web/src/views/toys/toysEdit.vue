@@ -14,14 +14,20 @@
 
         <el-tabs v-model="active" tab-position="left" style="height: 100%px;" >
           <el-tab-pane label="基本信息" name="1" >
-            <el-form-item label="选择库存玩具" prop="parent" label-width="100px">
-              <el-select v-model="model.parent">
-                <el-option v-for="item in parents" :key="item._id" :label="item.st_name" :value="item._id"></el-option>
+           <el-form-item label="玩具分类" prop="child" label-width="100px">
+              <el-select v-model="model.st_tyName"  @change="getStNameById()">
+                <el-option v-for="item in toyTypes" :key="item._id" :label="item.tyt_name" :value="item.tyt_name">
+                </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="玩具分类" prop="child" label-width="100px">
-              <el-select disabled v-model="model.parent">
-                <el-option v-for="item in parents" :key="item._id" :label="item.st_tyName" :value="item._id">
+            <el-form-item label="选择库存玩具" prop="st_name" label-width="100px">
+              <el-select v-model="model.st_name" >
+                <el-option v-for="item in stName" :key="item._id" :label="item.st_name" :value="item.st_name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="单位" prop="child" label-width="100px">
+              <el-select v-model="model.parent">
+                <el-option v-for="item in parents" :key="item._id" :label="item.st_unit" :value="item._id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -40,7 +46,6 @@
             <el-option label="中号" value="中号"></el-option>
             <el-option label="小号" value="小号"></el-option>
             <el-option label="超大号" value="超大号"></el-option>
-            
           </el-select>
         </el-form-item>
         <el-form-item label="颜色分类" prop="st_model" label-width="200px">
@@ -137,9 +142,11 @@
     },
     data() {
       return {
+        stName:[],
         active: '1',
         parents: [],
         parent: [],
+        toyTypes:[],
 
         model: {
           pictures: [],
@@ -150,7 +157,7 @@
             required: true,
             trigger: 'blur'
           },
-          parent: {
+          st_name: {
             required: true,
             trigger: 'blur'
           },
@@ -194,21 +201,33 @@
 
     },
     methods: {
+//根据玩具分类查找玩具
+      getStNameById(){
+        this.stName =[]
+ /* console.log(this.model.st_tyName+"搜索id"); */
+    this.parents.forEach(item=> {
+      /*  console.log(item.st_tyName+"玩具id"); */
+      if(item.st_tyName==this.model.st_tyName){
+        this.stName.push(item) 
+      }
+});
+      },
 
       afterUpload(res) {
         this.$set(this.model, 'ty_icon', res.url);
         //this.model.icon = res.url
       },
 
-      //玩具分类
+      //玩具库存
       async getParents() {
         const res = await this.$http.get('rest/stock')
         this.parents = res.data
-       /*  this.parents.forEach(item => {
-          item.st_parameter = 
-          item.st_parameter.length === 0 ? [] : item.st_parameter.trim().split(',')
-        })
-        console.log(this.parents)  */
+      },
+       //玩具库存
+      async getToyTypes() {
+        const res = await this.$http.get('rest/toyType')
+        this.toyTypes = res.data
+     
       },
       async save() {
 
@@ -239,7 +258,7 @@
     created() {
       this.id && this.fetch()
       this.getParents()
-      
+      this.getToyTypes()
     }
   }
 </script>

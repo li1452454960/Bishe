@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    mb_id: { type: String, },
+    mb_name: { type: String, },
+    tyt_name: { type: String, },
     sl_id: { type: String },
     sl_name: { type: String },
     sl_number: { type: Number },
@@ -13,7 +14,8 @@ const schema = new mongoose.Schema({
     sl_delivery: { type: String },
     sl_receive: { type: String },
     date: { type: Date, default: Date.now },
-    parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'member' },
+    /*  parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'member' }, */
+    parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'toy', },
 
 
 })

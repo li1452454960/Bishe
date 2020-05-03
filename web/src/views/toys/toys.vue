@@ -27,25 +27,16 @@
       </el-table-column>
       <el-table-column prop="parent.st_id" label="玩具编号" width="150" >
       </el-table-column>
-     <el-table-column prop="parent.st_tyName" label="玩具分类" width="100">
+     <el-table-column prop="st_tyName" label="玩具分类" width="100">
       </el-table-column>
-      <el-table-column prop="parent.st_name" label="玩具名称" width="100">
+      <el-table-column prop="st_name" label="玩具名称" width="100">
       </el-table-column>
       <el-table-column prop="ty_price" label="单价" width="100">
       <template slot-scope="scope">
         <span style="color:#4db3ff">{{ scope.row.ty_price }}元</span>
         </template>
       </el-table-column>
-      <el-table-column prop="parent.st_stock" label="库存" width="150">
-      <template slot-scope="scope">
-          <span v-if="scope.row.parent.st_stock <= 20 ">
-            <span style="color:#f56767">{{ scope.row.parent.st_stock }}（库存不足）</span>
-          </span>
-          <span v-if="scope.row.parent.st_stock > 20 ">
-            <span style="color:#00d053">{{ scope.row.parent.st_stock}}</span>
-          </span>
-        </template>
-      </el-table-column>
+      
       <el-table-column prop="parent.st_unit" label="单位" width="150">
       </el-table-column>
       <el-table-column prop="date" label="上架时间">
@@ -164,7 +155,7 @@
       // 获取列表
       async fetchStock() {
         const res = await this.$http.get('rest/stocks')
-        this.allitems = res.data
+        this.parents = res.data
       },
       // 获取列表
       async fetchToyType() {
@@ -213,7 +204,7 @@
       //删除会员
       async deleToys(row) {
 
-        this.$confirm(`确定下架 "${row.parent.st_name}" 玩具吗? `, '提示', {
+        this.$confirm(`确定下架 "${row.st_name}" 玩具吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

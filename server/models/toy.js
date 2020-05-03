@@ -7,6 +7,8 @@ const schema = new mongoose.Schema({
         ty_icon: { type: String },
 
     }],
+    st_name: { type: String, },
+    st_tyName: { type: String }, //玩具类型
     parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'stock' },
     ty_price: { type: Number },
     date: { type: Date, default: Date.now },

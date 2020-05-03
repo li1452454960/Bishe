@@ -89,101 +89,110 @@
 <script>
   import echarts from 'echarts'
   export default {
+    data() {
+      return {
+        allitems: [],
+        salesItems: [],
+        typeCount: [],
+        nameList: []
+      }
+    },
     mounted() {
 
-
-      // 基于准备好的dom，初始化echarts
-      var myChartColumn = echarts.init(document.getElementById('column'));
-      var myChartPie = echarts.init(document.getElementById('pie'));
-      // 绘制图表
-      myChartColumn.setOption({
-        title: {
-          text: '每月新增统计'
-        },
-        tooltip: {},
-        xAxis: {
-          data: ['新增用户', '新增会员', '新增玩具', '新增订单', '会员退会']
-        },
-        yAxis: {},
-        series: [{
-          name: '数量',
-          type: 'bar',
-          itemStyle: {
-            normal: {
-              //，定义一个list，然后根据所以取得不同的值，这样就实现了，
-              color: function (params) {
-                // build a color map as your need.
-                var colorList = [
-                  '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffeaa7',
-                  ];
-                return colorList[params.dataIndex]
-              },
-              //以下为是否显示，显示位置和显示格式的设置了
-              label: {
-                show: true,
-                position: 'top',
-                //                             formatter: '{c}'
-                formatter: '{b}\n{c}'
-              }
-            }
-          },
-          data: [5, 20, 36, 10, 10]
-        }]
-      });
-
-      myChartPie.setOption({
-        title: {
-          text: '每月销售玩具分类',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
-          data: ['体育玩具', '智力玩具', '科教玩具', '军事玩具', '装饰玩具']
-        },
-        series: [{
-          name: '销售数量',
-          type: 'pie',
-          radius: '55%',
-          center: ['50%', '60%'],
-           itemStyle: {
-            normal: {
-              //，定义一个list，然后根据所以取得不同的值，这样就实现了，
-              color: function (params) {
-                // build a color map as your need.
-                var colorList = [
-                  '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffeaa7',
-                  ];
-                return colorList[params.dataIndex]
-              },
-              //以下为是否显示，显示位置和显示格式的设置了
-              label: {
-                show: true,
-                position: 'top',
-                //                             formatter: '{c}'
-                formatter: '{b}\n{c}'
-              }
-            }
-          },
-          data: [{value: 35,  name: '体育玩具' },
-            { value: 31,name: '智力玩具'},
-            {value: 23,name: '科教玩具'},
-            {value: 13,name: '军事玩具'},
-            {value: 154,name: '装饰玩具'}
-          ],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }]
-      });
+      //       // 基于准备好的dom，初始化echarts
+      //       var myChartColumn = echarts.init(document.getElementById('column'));
+      //       var myChartPie = echarts.init(document.getElementById('pie'));
+      //       // 绘制图表
+      //       myChartColumn.setOption({
+      //         title: {
+      //           text: '每月新增统计'
+      //         },
+      //         tooltip: {},
+      //         xAxis: {
+      //           data: ['新增用户', '新增会员', '新增玩具', '新增订单', '会员退会']
+      //         },
+      //         yAxis: {},
+      //         series: [{
+      //           name: '数量',
+      //           type: 'bar',
+      //           itemStyle: {
+      //             normal: {
+      //               //，定义一个list，然后根据所以取得不同的值，这样就实现了，
+      //               color: function (params) {
+      //                 // build a color map as your need.
+      //                 var colorList = [
+      //                   '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffeaa7',
+      //                 ];
+      //                 return colorList[params.dataIndex]
+      //               },
+      //               //以下为是否显示，显示位置和显示格式的设置了
+      //               label: {
+      //                 show: true,
+      //                 position: 'top',
+      //                 //                             formatter: '{c}'
+      //                 formatter: '{b}\n{c}'
+      //               }
+      //             }
+      //           },
+      //           data: [5, 20, 36, 10, 10]
+      //         }]
+      //       });
+      // const nList = this.nameList;
+      // console.log(this.nameList+"----------1")
+      // let v=JSON.stringify(nList);
+      // console.log(v+"----------2")
+      //       myChartPie.setOption({
+      //         title: {
+      //           text: '每月销售玩具分类',
+      //           left: 'center'
+      //         },
+      //         tooltip: {
+      //           trigger: 'item',
+      //           formatter: '{a} <br/>{b} : {c} ({d}%)'
+      //         },
+      //         legend: {
+      //           orient: 'vertical',
+      //           left: 'left',
+      //           data: JSON.stringify(nList)
+      //         },
+      //         series: [{
+      //           name: '销售数量',
+      //           type: 'pie',
+      //           radius: '55%',
+      //           center: ['50%', '60%'],
+      //           itemStyle: {
+      //             normal: {
+      //               //，定义一个list，然后根据所以取得不同的值，这样就实现了，
+      //               color: function (params) {
+      //                 // build a color map as your need.
+      //                 var colorList = [
+      //                   '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffeaa7',
+      //                 ];
+      //                 return colorList[params.dataIndex]
+      //               },
+      //               //以下为是否显示，显示位置和显示格式的设置了
+      //               label: {
+      //                 show: true,
+      //                 position: 'top',
+      //                 //                             formatter: '{c}'
+      //                 formatter: '{b}\n{c}'
+      //               }
+      //             }
+      //           },
+      //           data: [{value: 1,
+      // name: "辆"},{value: 6,
+      // name: "件"},{value: 5,
+      // name: "个"},{value: 2,
+      // name: "2"}],
+      //           emphasis: {
+      //             itemStyle: {
+      //               shadowBlur: 10,
+      //               shadowOffsetX: 0,
+      //               shadowColor: 'rgba(0, 0, 0, 0.5)'
+      //             }
+      //           }
+      //         }]
+      //       });
 
 
     },
@@ -193,17 +202,163 @@
         return this.$store.getters.user
       }
     },
-    methods: {
-      
-      //  async dataCount() {
-      //   const res = await this.$http.get("rest/count")
-      //   this.model = res.data
-      // },
+    created() {
+      this.ngOnInit();
+      this.fetchMembers()
+      this.fetchToys()
+      this.fetchStocks()
     },
-     created() {
-            // this.dataCount();
+    methods: {
+// 获取列表
+      async fetchMembers() {
+        const res = await this.$http.get('rest/members')
+        this.membersItems = res.data
+      },
+      async fetchToys() {
+        const res = await this.$http.get('rest/toys')
+        this.toysItems = res.data
+      },
+       async fetchStocks() {
+        const res = await this.$http.get('rest/stocks')
+        this.stocksItems = res.data
+      },
+      test() {
+        // 基于准备好的dom，初始化echarts
+        var myChartColumn = echarts.init(document.getElementById('column'));
+        var myChartPie = echarts.init(document.getElementById('pie'));
+        // 绘制图表
+        myChartColumn.setOption({
+          title: {
+            text: '每月新增统计'
+          },
+          tooltip: {},
+          xAxis: {
+            data: ['新增用户', '新增会员', '新增玩具', '新增订单', '会员退会']
+          },
+          yAxis: {},
+          series: [{
+            name: '数量',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                //，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                color: function (params) {
+                  // build a color map as your need.
+                  var colorList = [
+                    '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffeaa7',
+                  ];
+                  return colorList[params.dataIndex]
+                },
+                //以下为是否显示，显示位置和显示格式的设置了
+                label: {
+                  show: true,
+                  position: 'top',
+                  //                             formatter: '{c}'
+                  formatter: '{b}\n{c}'
+                }
+              }
+            },
+            data: [5, 20, 36, 10, 10]
+          }]
+        });
+        const nList = this.nameList;
+        const tList = this.typeCount;
+       /*  console.log(this.nameList + "----------1") */
+        /* let v = JSON.stringify(nList); */
+       /*  console.log(v + "----------2")
+        console.log(this.typeCount + "----------3") */
+        myChartPie.setOption({
+          title: {
+            text: '每月销售玩具分类',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: nList
+          },
+          series: [{
+            name: '销售数量',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            itemStyle: {
+              normal: {
+                //，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                color: function (params) {
+                  // build a color map as your need.
+                  var colorList = [
+                    '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#ffeaa7',
+                  ];
+                  return colorList[params.dataIndex]
+                },
+                //以下为是否显示，显示位置和显示格式的设置了
+                label: {
+                  show: true,
+                  position: 'top',
+                  //                             formatter: '{c}'
+                  formatter: '{b}\n{c}'
+                }
+              }
+            },
+            data: tList,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }]
+        });
 
+      },
+      //统计
+      async ngOnInit() {
+        const res = await this.$http.get('rest/sale')
+        this.allitems = res.data
+        const sorted = this.groupBy(this.allitems, function (item) {
+          return [item.parent.st_tyName];
+        });
+      /*   console.log(this.allitems) */
+        //console.log(sorted);
+        var _this = this;
+        _this.typeCount = [],
+          _this.nameList = [],
+          sorted.forEach(function (item) {
+            _this.typeCount.push({
+              value: item.length,
+              name: item[0].parent.st_tyName
+            })
+            _this.nameList.push(item[0].parent.st_tyName);
+          })
+        /* console.log(_this.nameList)
+        console.log(_this.typeCount) */
+        this.test();
+      },
+
+      groupBy(array, f) {
+        /*  debugger */
+        if (!array) {
+          return;
         }
+        const groups = {};
+        array.forEach(function (o) {
+          const group = JSON.stringify(f(o));
+          groups[group] = groups[group] || [];
+          groups[group].push(o);
+        });
+        return Object.keys(groups).map(function (group) {
+          return groups[group];
+        });
+      },
+    },
+
+
   }
 </script>
 

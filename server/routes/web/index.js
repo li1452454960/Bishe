@@ -19,7 +19,7 @@ module.exports = app => {
             assert(req.body.mb_email, 422, '请填写邮箱')
             assert(req.body.mb_mobile, 422, '请填写手机号码')
         } else if (req.Model.modelName === 'toy') {
-            assert(req.body.parent, 422, '请选择要上架玩具')
+            assert(req.body.st_name, 422, '请选择要上架玩具')
             assert(req.body.ty_price, 422, '请填写玩具价格')
         } else if (req.Model.modelName === 'stock') {
             assert(req.body.st_name, 422, '请填写入库玩具名称')
@@ -62,7 +62,7 @@ module.exports = app => {
 
         const queryOptions = {}
         if (req.Model.modelName === 'toy' || 'stock' || 'score' || 'sale') {
-            queryOptions.populate = 'parent' || 'child '
+            queryOptions.populate = 'parent'
         }
         const items = await req.Model.find({}).setOptions(queryOptions)
         res.send(items)
