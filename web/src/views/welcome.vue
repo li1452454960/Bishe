@@ -92,9 +92,11 @@
     data() {
       return {
         allitems: [],
+        queryData: [],
         salesItems: [],
         typeCount: [],
-        nameList: []
+        nameList: [],
+        systemDate: ''
       }
     },
     mounted() {
@@ -207,6 +209,7 @@
       this.fetchMembers()
       this.fetchToys()
       this.fetchStocks()
+      this.addDate()
     },
     methods: {
 // 获取列表
@@ -317,11 +320,35 @@
         });
 
       },
-      //统计
+      //获取本月月份
+      addDate() {
+                  const  nowDate = new Date();
+                    let date = {
+                        year: nowDate.getFullYear(),
+                        month: nowDate.getMonth() + 1,
+                    }
+                    console.log(date);
+                    this.systemDate = date.year + '-' + date.month 
+                    /* console.log(this.systemDate); */
+                },
+      //饼状统计图
       async ngOnInit() {
+       
         const res = await this.$http.get('rest/sale')
         this.allitems = res.data
-        const sorted = this.groupBy(this.allitems, function (item) {
+        this.queryData = res.data
+         this.dataitems = this.queryData.filter(item => {
+          let saleDate = new Date(item.date)
+          let saleTime = saleDate.getTime()
+          let monthDate = new Date(this.systemDate)
+          let monthTime = monthDate.getTime()
+         /*  console.log(saleTime+'数据时间');
+          console.log(monthTime+'本月时间'); */
+          if (this.systemDate) {
+            return saleTime >= monthTime
+          }
+        })
+        const sorted = this.groupBy(this.dataitems, function (item) {
           return [item.parent.st_tyName];
         });
       /*   console.log(this.allitems) */

@@ -40,14 +40,14 @@
           </el-table-column>
           <el-table-column prop="parent.ty_price" label="单价" width="100">
             <template slot-scope="scope">
-              <span style="color:#4db3ff">¥{{ scope.row.parent.ty_price }}元</span>
+              <span style="color:#4db3ff">¥ {{ scope.row.parent.ty_price }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="sl_number" label="数量" width="100">
           </el-table-column>
           <el-table-column prop="sl_totalPrice" label="总额" width="100">
             <template slot-scope="scope">
-              <span style="color:#00d053">¥{{ scope.row.sl_totalPrice}}元</span>
+              <span style="color:#00d053">¥ {{ scope.row.sl_totalPrice}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="sl_payment" label="是否付款" width="100">
@@ -108,12 +108,12 @@
           </el-table-column>
           <el-table-column prop="ty_price" label="单价" width="100">
             <template slot-scope="scope">
-              <span style="color:#4db3ff">¥{{ scope.row.ty_price }}元</span>
+              <span style="color:#4db3ff">¥{{ scope.row.ty_price }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="sl_totalPrice" label="总额" width="100">
             <template slot-scope="scope">
-              <span style="color:#00d053">¥{{ scope.row.sl_totalPrice }}元</span>
+              <span style="color:#00d053">¥{{ scope.row.sl_totalPrice }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="sl_payment" label="是否付款" width="100">
@@ -149,12 +149,12 @@
           </el-table-column>
           <el-table-column prop="ty_price" label="单价" width="100">
             <template slot-scope="scope">
-              <span style="color:#4db3ff">¥{{ scope.row.ty_price }}元</span>
+              <span style="color:#4db3ff">¥{{ scope.row.ty_price }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="sl_totalPrice" label="总额" width="100">
             <template slot-scope="scope">
-              <span style="color:#00d053">¥{{ scope.row.sl_totalPrice }}元</span>
+              <span style="color:#00d053">¥{{ scope.row.sl_totalPrice }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="sl_payType" label="付款方式" width="100">
@@ -511,7 +511,7 @@
         this.$router.push('/sales')
         this.$message({
           type: 'success',
-          message: '保存成功'
+          message: '下单成功'
         });
         this.fetch()
        }
