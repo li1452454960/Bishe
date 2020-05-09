@@ -18,7 +18,7 @@
         <template>
           <el-button type="info" plain @click="searchUser" icon="el-icon-search"></el-button>
         </template>
-        <el-button v-if="user.identity == '管理员'" @click="$router.push('/toysCreate')" type="primary">上架玩具</el-button>
+        <el-button v-if="user.identity == '管理员'" @click="$router.push('/toysCreate')" type="primary" style="float: right;">上架玩具</el-button>
       </el-col>
     </el-row>
 

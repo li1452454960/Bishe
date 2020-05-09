@@ -9,6 +9,8 @@ const schema = new mongoose.Schema({
     child: { type: mongoose.SchemaTypes.ObjectId, ref: 'toyType', },
     st_tyName: { type: String }, //玩具类型
     date: { type: Date, default: Date.now },
+    /* st_parameter: [{ type: String }], //型号大小
+    st_model: [{ type: String }], //颜色分类 */
 
 
 })

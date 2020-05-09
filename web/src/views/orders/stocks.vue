@@ -8,8 +8,17 @@
 
     <el-row class="searchRow">
       <el-col>
-
-        <el-button @click="showAddToysDia()" type="primary">玩具入库</el-button>
+         玩具分类: <el-select @input="loadUserList()" v-model="query.st_tyName"  clearable placeholder="请选择玩具分类" class="inputSearch">
+                <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item.tyt_name">
+                </el-option>
+              </el-select>  
+      玩具名称: <el-input @input="loadUserList()" clearable placeholder="请输入玩具名称" v-model="query.st_name" class="inputSearch"></el-input>
+      玩具编号: <el-input @input="loadUserList()"  clearable placeholder="请输入玩具编号" v-model="query.st_id" class="inputSearch"></el-input>
+      
+        <template>
+          <el-button type="info" plain @click="searchUser" icon="el-icon-search"></el-button>
+        </template>
+        <el-button @click="showAddToysDia()" type="primary" style="float: right;">玩具入库</el-button>
       </el-col>
     </el-row>
 
@@ -20,7 +29,7 @@
       </el-table-column>
       <el-table-column prop="st_tyName" label="玩具分类" width="100">
       </el-table-column>
-      <el-table-column prop="st_name" label="玩具名称" width="100">
+      <el-table-column prop="st_name" label="玩具名称" >
       </el-table-column>
       <el-table-column prop="st_unit" label="单位" width="100">
       </el-table-column>
@@ -50,7 +59,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogFormVisibleAdd" @open="$refs.mbForm.clearValidate()">
+    <el-dialog :visible.sync="dialogFormVisibleAdd" @open="$refs['mbForm'].clearValidate()">
       <h2>{{form._id ? '增加玩具库存' : '新玩具入库'}}</h2>
       <el-form :model="form" :rules="rules" ref="mbForm">
          <el-form-item label="玩具编号"  label-width="100px">
@@ -72,11 +81,12 @@
             <el-option label="辆" value="辆"></el-option>
             <el-option label="把" value="把"></el-option>
             <el-option label="只" value="只"></el-option>
+            <el-option label="条" value="条"></el-option>
           </el-select>
         </el-form-item>
         
         <el-form-item label="数量" prop="st_stock" label-width="100px">
-          <el-input v-model="form.st_stock" autocomplete="off"></el-input>
+          <el-input-number v-model="form.st_stock" autocomplete="off"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -90,18 +100,29 @@
       <el-form :model="form">
         <el-form-item label="玩具分类" prop="st_tyName " label-width="100px">
             <el-select v-model="form.st_tyName">
-          <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item._id"></el-option>
+          <el-option v-for="item in children" :key="item._id" :label="item.tyt_name" :value="item.tyt_name"></el-option>
         </el-select>
           </el-form-item>
           
         <el-form-item label="玩具名称" label-width="100px">
           <el-input v-model="form.st_name" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="单位" prop="st_unit" label-width="100px">
+          <el-select v-model="form.st_unit">
+            <el-option label="件" value="件"></el-option>
+            <el-option label="箱" value="箱"></el-option>
+            <el-option label="个" value="个"></el-option>
+            <el-option label="辆" value="辆"></el-option>
+            <el-option label="把" value="把"></el-option>
+            <el-option label="只" value="只"></el-option>
+            <el-option label="条" value="条"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="库存" prop="st_stock" label-width="100px">
-          <el-input v-model="form.st_stock" autocomplete="off"></el-input>
+          <el-input-number v-model="form.st_stock" autocomplete="off"></el-input-number>
         </el-form-item>
         <el-form-item label="新增库存" label-width="100px">
-          <el-input  v-model="form.st_number" autocomplete="off"></el-input>
+         <el-input-number v-model="form.st_number" autocomplete="off"></el-input-number> 
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -126,6 +147,11 @@
   export default {
     data() {
       return {
+        query: {
+          st_tyName: '',
+          st_id: '',
+          st_name: ''
+        },
         paginations: {
           page_index: 1, //当前位于多少页
           total: 0, //总数
@@ -138,6 +164,7 @@
         child: [],
         children: [],   
         allitems: [],
+        queryData: [],
         items: [],
         dialogFormVisibleAdd: false,
         dialogFormVisibleAddStock: false,
@@ -170,6 +197,9 @@
 
     methods: {
      
+
+ 
+
       //自增编号
       order_nums() {
         var outTradeNo = ""; //订单号
@@ -201,6 +231,7 @@
         this.form = {}
         this.form.st_id = this.outTradeNo
         this.dialogFormVisibleAdd = true
+       
       },
       async addToys() {
          
@@ -225,10 +256,50 @@
         this.fetch()
 
       },
+      //搜索
+            searchUser() {
+                if (this.query.st_name==='' && this.query.st_tyName ==='' &&this.query.st_id==='') {
+                    this.$message({
+                        type: "warning",
+                        message: "请输入搜索条件"
+                    })
+                    this.fetch();
+                    return
+                }
+
+                this.allitems = this.queryData.filter(item => {
+
+                  let stName = item.st_name
+                  let stId = item.st_id
+                  let stTyName = item.st_tyName
+                if (this.query.st_name && this.query.st_tyName &&this.query.st_id) {
+                    return this.query.st_name === stName && this.query.st_tyName === stTyName&& this.query.st_id === stId
+                  } else if (this.query.st_name && this.query.st_tyName) {
+                    return this.query.st_name === stName && this.query.st_tyName === stTyName
+                  } else if (this.query.st_tyName && this.query.st_id) {
+                    return this.query.st_tyName === stTyName && this.query.st_id === stId
+                  } else if (this.query.st_name && this.query.st_id) {
+                    return this.query.st_name === stName && this.query.st_id === stId
+                  } else if (this.query.st_id) {
+                    return this.query.st_id === stId
+                  } else if (this.query.st_name) {
+                    return this.query.st_name === stName
+                  }else if (this.query.st_tyName) {
+                    return this.query.st_tyName === stTyName
+                  }
+
+                })
+                this.setPaginations()
+
+            },
+            loadUserList() {
+               this.fetch();
+            },
       //获取列表
       async fetch() {
         const res = await this.$http.get('rest/stocks')
         this.allitems = res.data
+        this.queryData = res.data
         this.setPaginations()
       },
       //获取玩具分类
@@ -291,6 +362,7 @@
       this.fetch()
      // this.getParents();
       this.getChildren()
+      
     },
 
   }

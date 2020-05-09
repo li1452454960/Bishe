@@ -195,7 +195,7 @@
           <el-input v-model="form.sl_id" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="会员名称" label-width="100px">
-          <el-select v-model="form.mb_name">
+          <el-select v-model="form.mb_name"  @change="getPriceByName()">
             <el-option v-for="item in members" :key="item._id" :label="item.mb_name" :value="item.mb_name"></el-option>
           </el-select>
         </el-form-item>
@@ -258,7 +258,7 @@
           {{form.mb_name}}
         </el-form-item>
         <el-form-item label="手机号码 :" label-width="100px">
-          {{form.mb_mobile}}
+          {{form.parent.mb_mobile}}
         </el-form-item>
         <el-form-item label="商品名称 :" label-width="100px">
           {{form.sl_name}}
@@ -283,9 +283,6 @@
         </el-form-item>
         <el-form-item label="是否发货" label-width="100px">
           {{form.sl_delivery}}
-        </el-form-item>
-        <el-form-item label="待确认收货" label-width="100px">
-          {{form.sl_receive}}
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -329,6 +326,8 @@
         allitems: [],
         items: [],
         saveItem:{},//库存Obj
+        scoresItem:[],
+        scoreItem:{},
         dialogFormVisibleAdd: false,
         dialogFormVisibleShow: false,
         form: {
@@ -361,6 +360,26 @@
           
         });
       },
+       //根据会员id获取积分
+      getPriceByName() {
+         let mbName='';
+        /* console.log(this.form.mb_name+"会员名称"); */
+        this.members.forEach(item2 => {
+         /*  console.log(item2.mb_name+"玩具id"); */
+          if (item2.mb_name == this.form.mb_name) {
+            mbName=item2.mb_name;
+          }
+          /*  console.log(mbName+'mb会员'); */
+        });
+         this.scoresItem.forEach(item3 => {
+           
+          if (item3.mb_name == mbName) {
+          
+            this.scoreItem=item3;
+          }
+          
+        });
+      },
       //订单总额
       totalPrice() {
         /* console.log(this.form.sl_number) */
@@ -374,7 +393,7 @@
         {
           outTradeNo += Math.floor(Math.random() * 10);
         }
-        outTradeNo = String(getDateNums(new Date())) + String(outTradeNo)
+        outTradeNo = 'WJ'+ String(getDateNums(new Date())) + String(outTradeNo)
         this.outTradeNo = outTradeNo;
       },
 
@@ -446,16 +465,38 @@
         this.parents = res.data
         /* console.log(children) */
       },
-      // 获取列表
+      // 获取库存列表
       async fetchStock() {
         const res = await this.$http.get('rest/stocks')
         this.stocksItem = res.data
       },
+       // 获取积分列表
+      async fetchScores() {
+        const res = await this.$http.get('rest/scores')
+        this.scoresItem = res.data
+      },
+      //下单删减库存
       async addToys() {
-        
          this.saveItem.st_stock= this.saveItem.st_stock-this.form.sl_number;
            await this.$http.put(`rest/stocks/${this.saveItem._id}`, this.saveItem)
+        },
+      //下单增加积分
+      async addScore() {
+         /*   console.log(this.scoreItem.mb_name+ '积分会员') */
+          if(this.scoreItem.mb_name){  
+         const score =  this.scoreItem.sc_score == null ? 0 : this.scoreItem.sc_score
+         this.scoreItem.sc_score = (score ) + this.form.sl_totalPrice /10
+          await this.$http.put(`rest/scores/${this.scoreItem._id}`, this.scoreItem)
+          }else {
+            this.scoreItem.mb_name= this.form.mb_name;
+           /*   console.log(this.form.mb_name+ '下单会员') */
+         this.scoreItem.sc_score = this.form.sl_totalPrice /10
+          /* console.log(this.form.sl_totalPrice + '总额') */
+        await this.$http.post('rest/scores', this.scoreItem)
 
+          }
+       
+         
         },
        //判断库存
         hasAccess(){
@@ -499,6 +540,7 @@
         else{
         this.dialogFormVisibleAdd = false
            this.getPriceById();
+          this. getPriceByName()
           /*  console.log(this.saveItem); */
         if (this.form._id) {
           await this.$http.put(`rest/sale/${this.form._id}`, this.form)
@@ -506,7 +548,7 @@
           await this.$http.post('rest/sale', this.form)
         }
 
-      
+        this.addScore()
         this.addToys();
         this.$router.push('/sales')
         this.$message({
@@ -578,6 +620,7 @@
       this.getParents()
       this.getMembers()
       this.fetchStock()
+      this.fetchScores()
       
     }
   }

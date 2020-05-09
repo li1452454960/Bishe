@@ -10,10 +10,15 @@
       <el-col>
       姓名: <el-input @input="loadUserList()" clearable placeholder="请输入姓名" v-model="query.mb_name" class="inputSearch"></el-input>
       年龄: <el-input  @input="loadUserList()"  clearable placeholder="请输入年龄" v-model="query.mb_age" class="inputSearch"></el-input>
+      会员级别: <el-select @input="loadUserList()" v-model="query.mb_grade"  clearable placeholder="请选择会员级别" class="inputSearch">
+                    <el-option label="普通会员" value="普通会员"></el-option>
+                    <el-option label="黄金会员" value="黄金会员"></el-option>
+                    <el-option label="钻石会员" value="钻石会员"></el-option> 
+                     </el-select>     
             <template>
           <el-button type="info" plain @click="searchMember()" icon="el-icon-search"></el-button>
         </template>
-        <el-button @click="showAddMemberDia()" type="primary">会员入会</el-button>
+        <el-button @click="showAddMemberDia()" type="primary" style="float: right;">会员入会</el-button>
       </el-col>
     </el-row>
 
@@ -169,7 +174,8 @@
 
         query: {
           mb_name: '',
-          mb_age: ''
+          mb_age: '',
+          mb_grade: ''
         },
         queryData: [],
         allitems: [],
@@ -190,10 +196,10 @@
       },
       //搜索用户
       searchMember() {
-        if (this.query.mb_name === '' && this.query.mb_age === '') {
+        if (this.query.mb_name === '' && this.query.mb_age === ''&& this.query.mb_grade === '') {
           this.$message({
             type: "warning",
-            message: "请输入搜索内容"
+            message: "请输入搜索条件"
           })
           this.fetch();
           return
@@ -202,16 +208,21 @@
 
           let mbName = item.mb_name
           let mbAge = item.mb_age.toString()
-           if (this.query.mb_name && this.query.mb_age) 
-          {
+          let mbGrade = item.mb_grade
+         if (this.query.mb_name && this.query.mb_grade &&this.query.mb_age) {
+            return this.query.mb_name === mbName && this.query.mb_grade === mbGrade&& this.query.mb_age === mbAge
+          } else if (this.query.mb_name && this.query.mb_grade) {
+            return this.query.mb_name === mbName && this.query.mb_grade === mbGrade
+          } else if (this.query.mb_grade && this.query.mb_age) {
+            return this.query.mb_grade === mbGrade && this.query.mb_age === mbAge
+          } else if (this.query.mb_name && this.query.mb_age) {
             return this.query.mb_name === mbName && this.query.mb_age === mbAge
-          }
-          else
-          if (this.query.mb_age) {
+          } else if (this.query.mb_age) {
             return this.query.mb_age === mbAge
-          } else
-            if (this.query.mb_name) {
+          } else if (this.query.mb_name) {
             return this.query.mb_name === mbName
+          }else if (this.query.mb_grade) {
+            return this.query.mb_grade === mbGrade
           }
 
         })

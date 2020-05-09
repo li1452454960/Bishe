@@ -13,7 +13,7 @@ import AdminUserList from '../views/users/AdminUserList.vue'
 import Sales from '../views/orders/sales.vue'
 import Stocks from '../views/orders/stocks.vue'
 
-//解决添加相同相同的路由报错
+//解决添加相同的路由报错
 Vue.use(Router)
 const routerPush = Router.prototype.push
 Router.prototype.push = function push(location) {
