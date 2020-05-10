@@ -30,7 +30,7 @@
         <el-table :data="items">
           <el-table-column type="index" label="#" width="60">
           </el-table-column>
-          <el-table-column prop="sl_id" label="订单编号" width="150">
+          <el-table-column prop="sl_id" label="订单编号" width="160">
           </el-table-column>
           <el-table-column prop="mb_name" label="会员名称" width="100">
           </el-table-column>
@@ -257,17 +257,11 @@
         <el-form-item label="会员名称 :" label-width="100px">
           {{form.mb_name}}
         </el-form-item>
-        <el-form-item label="手机号码 :" label-width="100px">
-          {{form.parent.mb_mobile}}
-        </el-form-item>
         <el-form-item label="商品名称 :" label-width="100px">
-          {{form.sl_name}}
+          {{form.st_name}}
         </el-form-item>
         <el-form-item label="数量 :" label-width="100px">
           {{form.sl_number}}
-        </el-form-item>
-        <el-form-item label="单位" label-width="100px">
-          {{form.sl_unit}}
         </el-form-item>
         <el-form-item label="单价" label-width="100px">
           {{form.ty_price}}
@@ -342,7 +336,7 @@
       getPriceById() {
         let toyName='';
         /* console.log(toyName); */
-        console.log(this.form.parent+"搜索id");
+       /*  console.log(this.form.parent+"搜索id"); */
         this.parents.forEach(item => {
           /* console.log(item._id+"玩具id"); */
           if (item._id == this.form.parent) {
@@ -477,7 +471,7 @@
       },
       //下单删减库存
       async addToys() {
-         this.saveItem.st_stock= this.saveItem.st_stock-this.form.sl_number;
+            this.saveItem.st_stock= this.saveItem.st_stock-this.form.sl_number;
            await this.$http.put(`rest/stocks/${this.saveItem._id}`, this.saveItem)
         },
       //下单增加积分
@@ -544,17 +538,20 @@
           /*  console.log(this.saveItem); */
         if (this.form._id) {
           await this.$http.put(`rest/sale/${this.form._id}`, this.form)
+          this.$message({
+          type: 'success',
+          message: '编辑订单成功'
+        });
         } else {
           await this.$http.post('rest/sale', this.form)
-        }
-
-        this.addScore()
+         this.addScore()
         this.addToys();
         this.$router.push('/sales')
         this.$message({
           type: 'success',
           message: '下单成功'
         });
+        }
         this.fetch()
        }
       },

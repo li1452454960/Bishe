@@ -41,28 +41,22 @@ http.interceptors.response.use(res => {
     return res
 }, err => {
     endLoading()
-    if (err.response.data.message) {
+    if (err.response.data.message === 'jwt expired') {
+        Vue.prototype.$message({
+            type: 'warning',
+            message: '身份验证失效，请重新登录'
+        })
+        router.push('/')
+        return
+    }
+    if (err.response.status === 401) {
+        router.push('/')
+    } else if (err.response.data.message) {
         Vue.prototype.$message({
             type: 'error',
             message: err.response.data.message
         })
-        if (err.response.data.message === 'jwt expired') {
-            Vue.prototype.$message({
-                type: 'warning',
-                message: '身份验证失效，请重新登录'
-            })
-            router.push('/')
-        }
 
-        //    if ( err.response.status === 500) {
-        //      Vue.prototype.$message({
-        //           type: 'warning',
-        //           message: '请填写完整信息'
-        //      })  
-        //    } 
-        if (err.response.status === 401) {
-            router.push('/')
-        }
     }
 
     return Promise.reject(err)

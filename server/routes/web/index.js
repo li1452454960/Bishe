@@ -118,7 +118,7 @@ module.exports = app => {
             icon: user.icon,
             identity: user.identity
         }
-        const token = jwt.sign(rule, app.get('secret'), { expiresIn: 3600 })
+        const token = jwt.sign(rule, app.get('secret'), { expiresIn: 600 })
         res.send({ token })
     })
 
