@@ -1,6 +1,7 @@
 module.exports = app => {
     const mongoose = require('mongoose')
-    mongoose.connect('mongodb://127.0.0.1:27017/node-bishe', {
+        /* mongoose.connect('mongodb://root:123456@120.24.27.207:27017/node-bishe?authSource=admin', { */
+    mongoose.connect('mongodb://localhost:27017/node-bishe', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })

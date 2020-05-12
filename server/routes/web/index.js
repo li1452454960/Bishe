@@ -27,7 +27,10 @@ module.exports = app => {
             assert(req.body.st_unit, 422, '请选择入库玩具单位')
             assert(req.body.st_tyName, 422, '请选择玩具类型')
         }
-
+        const { username } = req.body
+            //根据用户名找用户
+        const user = await AdminUser.findOne({ username })
+        assert(!user, 422, '用户已存在')
         const model = await req.Model.create(req.body)
         res.send(model)
 
@@ -104,7 +107,6 @@ module.exports = app => {
 
         const { username, password } = req.body
             //根据用户名找用户
-
         const user = await AdminUser.findOne({ username }).select('+password')
         assert(user, 422, '用户不存在')
         assert(user.state, 422, '该用户已经被禁用!无法登录')

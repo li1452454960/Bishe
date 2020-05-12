@@ -159,7 +159,7 @@
       //删除
       async deleScoreDia(row) {
 
-        this.$confirm(`确定删除 "${row.st_name}" 玩具吗? `, '提示', {
+        this.$confirm(`确定删除 "${row.mb_name}" 会员的积分吗? `, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

@@ -12,6 +12,7 @@ import AdminUserEdit from '../views/users/AdminUserEdit.vue'
 import AdminUserList from '../views/users/AdminUserList.vue'
 import Sales from '../views/orders/sales.vue'
 import Stocks from '../views/orders/stocks.vue'
+import Notfound from '../views/404.vue'
 
 //解决添加相同的路由报错
 Vue.use(Router)
@@ -54,6 +55,11 @@ const router = new Router({
                     { path: '/stocks', component: Stocks },
 
                 ]
+            },
+            {
+                path: '*',
+                name: '/404',
+                component: Notfound
             },
 
         ]
