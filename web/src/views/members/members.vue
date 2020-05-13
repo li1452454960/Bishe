@@ -46,6 +46,17 @@
       <el-table-column prop="mb_mobile" label="电话">
       </el-table-column>
       <el-table-column prop="mb_grade" label="会员级别">
+      <template slot-scope="scope">
+              <span v-if="scope.row.mb_grade==='钻石会员'">
+                <span style="color:#f39c12">{{ scope.row.mb_grade }}</span>
+              </span>
+              <span v-if="scope.row.mb_grade==='黄金会员'">
+                <span style="color:#f1c40f">{{ scope.row.mb_grade }}</span>
+              </span>
+              <span v-if="scope.row.mb_grade==='普通会员'">
+                <span style="color:#7f8c8d">{{ scope.row.mb_grade }}</span>
+              </span>
+            </template>
       </el-table-column>
       <el-table-column prop="date" label="创建时间">
         <template slot-scope="scope"> {{scope.row.date | fmtdate}}</template>

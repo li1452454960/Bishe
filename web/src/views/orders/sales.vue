@@ -489,8 +489,6 @@
         await this.$http.post('rest/scores', this.scoreItem)
 
           }
-       
-         
         },
        //判断库存
         hasAccess(){

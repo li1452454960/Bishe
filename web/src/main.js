@@ -26,7 +26,7 @@ Vue.mixin({
 })
 
 Vue.filter('fmtdate', (v) => {
-    return moment(v).format('YYYY-MM-DD')
+    return moment(v).format('YYYY-MM-DD-h:mm:ss')
 })
 
 new Vue({
